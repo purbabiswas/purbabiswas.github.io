@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Purba Biswas · Applied Mathematics</title>
+<meta name="description" content="Purba Biswas — PhD student in Applied Mathematics at Case Western Reserve University. Mathematical biology, viral capsid geometry, aperiodic tilings, epidemic dynamics.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]})"></script>
+<script>
+  // Apply a saved light/dark choice before the page paints
+  try{ const t=localStorage.getItem('theme'); if(t) document.documentElement.dataset.theme=t; }catch(e){}
+</script>
+<style>
+/* ================= tokens ================= */
+:root{
+  --paper:#F6F7FB; --surface:#FFFFFF; --ink:#18203A; --muted:#5B6580; --rule:#DCE1EC;
+  --indigo:#3240A8; --sage:#2F7A64; --gold:#C8961E; --lilac:#AEB8F6;
+  --hero:#1B2554; --hero-2:#2B3A7E; --hero-ink:#EEF1FF; --hero-muted:#B9C1EA;
+  --tile:rgba(50,64,168,.07);
+}
+:root[data-theme="dark"]{
+  --paper:#0F1428; --surface:#161C36; --ink:#E7EAF6; --muted:#9CA5C6; --rule:#28304F;
+  --indigo:#A3AEFF; --sage:#7CC7AE; --gold:#E9BF55; --lilac:#AEB8F6;
+  --hero:#0B1030; --hero-2:#1A2462; --hero-ink:#EEF1FF; --hero-muted:#AEB6DD;
+  --tile:rgba(163,174,255,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1428; --surface:#161C36; --ink:#E7EAF6; --muted:#9CA5C6; --rule:#28304F;
+    --indigo:#A3AEFF; --sage:#7CC7AE; --gold:#E9BF55; --lilac:#AEB8F6;
+    --hero:#0B1030; --hero-2:#1A2462; --hero-ink:#EEF1FF; --hero-muted:#AEB6DD;
+    --tile:rgba(163,174,255,.06);
+  }
+}
+
+/* ================= base ================= */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;color:var(--ink);font:400 17px/1.68 "Literata",Georgia,serif;
+  background-color:var(--paper);
+  /* hexagonal lattice texture, like a capsid surface */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='72.75' viewBox='0 0 42 72.75'%3E%3Cpath d='M21 0l21 12.125v24.25L21 48.5 0 36.375v-24.25zM21 48.5v24.25' fill='none' stroke='%237080c0' stroke-opacity='.07' stroke-width='1'/%3E%3C/svg%3E");
+  background-attachment:fixed}
+h1,h2,h3,nav,.meta,.chip,button,.label,.kicker,.btn{font-family:"Space Grotesk",system-ui,sans-serif}
+a{color:var(--indigo);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+img{max-width:100%;display:block}
+
+/* ================= hero ================= */
+.hero{position:relative;overflow:hidden;color:var(--hero-ink);
+  background:
+    radial-gradient(1100px 600px at 78% 40%, var(--hero-2), transparent 60%),
+    var(--hero)}
+.hero::before{content:"";position:absolute;inset:0;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='72.75' viewBox='0 0 42 72.75'%3E%3Cpath d='M21 0l21 12.125v24.25L21 48.5 0 36.375v-24.25zM21 48.5v24.25' fill='none' stroke='%23aeb8f6' stroke-opacity='.12' stroke-width='1'/%3E%3C/svg%3E");
+  -webkit-mask-image:linear-gradient(90deg,#000 0%,transparent 75%);mask-image:linear-gradient(90deg,#000 0%,transparent 75%)}
+.hero-in{position:relative;max-width:1160px;margin:0 auto;padding:88px 32px 96px;
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.6rem,6vw,4.4rem);line-height:1;font-weight:700;letter-spacing:-.03em;margin:0 0 18px}
+.hero .who{font-family:"Space Grotesk",sans-serif;font-size:1.05rem;color:var(--hero-muted);margin:0 0 26px}
+.hero .who strong{color:var(--hero-ink);font-weight:500}
+.hero .q{font-size:1.25rem;line-height:1.55;max-width:38ch;margin:0 0 26px;color:var(--hero-ink)}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;font-size:.92rem;font-weight:500;
+  text-decoration:none;color:var(--hero-ink);border:1px solid rgba(174,184,246,.35);background:rgba(255,255,255,.04)}
+.btn:hover{background:rgba(255,255,255,.1);border-color:rgba(174,184,246,.7)}
+.btn.primary{background:var(--gold);color:#1B1606;border-color:var(--gold)}
+.btn.primary:hover{background:#dcaa2c}
+.capsid-wrap{position:relative;aspect-ratio:1;width:100%;max-width:440px;justify-self:center}
+#capsid{width:100%;height:100%;display:block}
+.capsid-key{position:absolute;bottom:-6px;left:0;right:0;text-align:center;font:400 .8rem "Space Grotesk",sans-serif;color:var(--hero-muted)}
+.capsid-key i{display:inline-block;width:9px;height:9px;border-radius:50%;margin:0 6px 0 14px;vertical-align:0}
+
+.hero-link{color:var(--hero-muted);text-decoration-color:rgba(174,184,246,.4)}
+.hero-link:hover{color:var(--hero-ink)}
+.icons{list-style:none;padding:0;margin:16px 0 0;display:flex;flex-wrap:wrap;gap:10px}
+.icons a{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:1.15rem;text-decoration:none;
+  color:var(--hero-ink);background:rgba(255,255,255,.06);border:1px solid rgba(174,184,246,.35);transition:background .2s,color .2s,transform .2s}
+.icons a:hover{background:var(--gold);color:#1B1606;border-color:var(--gold);transform:translateY(-2px)}
+@media (prefers-reduced-motion: reduce){.icons a{transition:none}.icons a:hover{transform:none}}
+.btn i{font-size:.95em}
+.contact .icons{margin-top:8px}
+.contact .icons a{color:var(--indigo);background:var(--paper);border-color:var(--rule)}
+
+.h-link{color:inherit;text-decoration:none;background-image:linear-gradient(var(--gold),var(--gold));background-size:0 2px;background-position:0 100%;background-repeat:no-repeat;transition:background-size .25s}
+.h-link:hover{background-size:100% 2px}
+.k-link{color:inherit;text-decoration:underline;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-underline-offset:2px}
+
+.plinks{display:inline-flex;gap:8px;margin-left:8px;vertical-align:1px}
+.plinks a{font:600 .74rem "Space Grotesk",sans-serif;padding:2px 9px;border-radius:999px;border:1px solid var(--indigo);text-decoration:none}
+.plinks a:hover{background:var(--indigo);color:var(--paper)}
+.mentor-photo{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:22px;align-items:center;margin:28px 0 0;grid-column:1/-1}
+.mentor-photo .ph{aspect-ratio:3/4;border:0}
+.mentor-photo figcaption{font-size:.95rem}
+
+/* ================= top nav ================= */
+.topnav{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 86%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.topnav-in{max-width:1160px;margin:0 auto;padding:0 32px;display:flex;align-items:center;gap:20px}
+.brand{font-weight:700;font-size:1rem;color:var(--ink);text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.brand svg{width:20px;height:20px}
+.topnav ol{list-style:none;margin:0;padding:0;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1}
+.topnav ol::-webkit-scrollbar{display:none}
+.topnav ol a{display:block;padding:15px 11px 13px;font-size:.9rem;color:var(--muted);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+.topnav ol a:hover{color:var(--ink)}
+.topnav ol a.on{color:var(--ink);border-bottom-color:var(--gold)}
+.mode{background:none;border:1px solid var(--rule);color:var(--ink);border-radius:999px;width:36px;height:36px;cursor:pointer;display:grid;place-items:center;flex:none}
+.mode svg{width:17px;height:17px}
+
+/* ================= content ================= */
+main{max-width:1160px;margin:0 auto;padding:12px 32px 40px}
+section{display:grid;grid-template-columns:200px minmax(0,1fr);gap:48px;padding:64px 0;scroll-margin-top:60px;border-bottom:1px solid var(--rule)}
+section:last-of-type{border-bottom:0}
+.sec-head h2{position:sticky;top:84px;font-size:1.05rem;font-weight:600;margin:0;color:var(--ink);display:flex;align-items:center;gap:10px}
+.sec-head h2::before{content:"";width:14px;height:14px;flex:none;background:var(--gold);
+  clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%)} /* a pentagon — the capsid's 12 special vertices */
+.sec-body{min-width:0;max-width:780px}
+h3{font-size:1.06rem;font-weight:600;margin:0 0 2px;line-height:1.35}
+p{margin:0 0 14px}
+.lede{font-size:1.3rem;line-height:1.55;margin-bottom:20px}
+.meta{color:var(--muted);font-size:.88rem;line-height:1.5}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:0;list-style:none}
+.chip{font-size:.85rem;padding:5px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--rule);color:var(--muted)}
+
+/* about with portrait */
+.about{display:grid;grid-template-columns:150px 1fr;gap:32px;align-items:start}
+.portrait{width:150px;aspect-ratio:1;border-radius:50%;overflow:hidden;position:relative;background:var(--surface);
+  border:1px solid var(--rule);display:grid;place-items:center}
+.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.portrait span{font:700 2.4rem "Space Grotesk",sans-serif;color:var(--indigo);letter-spacing:-.02em}
+
+/* photo slots: photo if present, else tiling pattern */
+.ph{position:relative;margin:0;border-radius:10px;overflow:hidden;background-color:var(--surface);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='72.75' viewBox='0 0 42 72.75'%3E%3Cpath d='M21 0l21 12.125v24.25L21 48.5 0 36.375v-24.25zM21 48.5v24.25' fill='none' stroke='%237080c0' stroke-opacity='.3' stroke-width='1'/%3E%3C/svg%3E");
+  border:1px solid var(--rule)}
+.ph img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+.ph .label{position:absolute;left:10px;bottom:10px;font-size:.75rem;color:var(--muted);background:var(--paper);padding:2px 8px;border-radius:4px}
+.ph:has(img) .label{display:none}
+
+/* featured: magazine layout */
+.featured{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 28px}
+.feat .ph{aspect-ratio:4/3;margin-bottom:14px}
+.feat.wide{grid-column:1/-1;display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:center;
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:14px}
+.feat.wide .ph{aspect-ratio:16/10;margin:0;border:0}
+.feat.wide .txt{padding:8px 12px 8px 0}
+.feat h3{font-size:1.15rem}
+.feat.wide h3{font-size:1.4rem;line-height:1.25}
+.feat p{font-size:.97rem;margin:8px 0 0}
+.kicker{font-size:.8rem;color:var(--sage);font-weight:600;margin-bottom:6px}
+
+/* research */
+.threads{display:grid;gap:40px}
+.thread{display:grid;grid-template-columns:1fr 190px;gap:28px;align-items:start}
+.thread .ph{aspect-ratio:1}
+.thread h3{font-size:1.2rem;margin-bottom:8px}
+.thread ul{margin:8px 0 0;padding-left:18px;font-size:.96rem}
+
+/* news */
+.news{list-style:none;padding:0;margin:0}
+.news li{display:grid;grid-template-columns:100px 1fr;gap:16px;padding:10px 0;border-bottom:1px dashed var(--rule)}
+.news li:last-child{border-bottom:0}
+.news .meta{padding-top:2px;color:var(--gold);font-weight:600}
+
+/* publications */
+.pubs{list-style:none;padding:0;margin:0;counter-reset:p}
+.pubs li{padding:14px 0 14px 50px;position:relative}
+.pubs li+li{border-top:1px solid var(--rule)}
+.pubs li::before{counter-increment:p;content:counter(p);position:absolute;left:0;top:14px;width:32px;height:32px;
+  background:var(--indigo);color:var(--paper);font:600 .85rem/32px "Space Grotesk",sans-serif;text-align:center;
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)} /* hexagon badges */
+.pubs .title{font-weight:600}
+h3.sub{font-size:.85rem;color:var(--muted);margin:26px 0 6px;font-weight:600}
+h3.sub:first-child{margin-top:0}
+
+/* timeline */
+.timeline{list-style:none;padding:0;margin:0;position:relative}
+.timeline::before{content:"";position:absolute;left:6px;top:10px;bottom:10px;width:2px;
+  background:linear-gradient(var(--gold),var(--indigo) 30%,var(--rule))}
+.timeline li{position:relative;padding:0 0 30px 34px;display:grid;grid-template-columns:1fr auto;gap:18px}
+.timeline li::before{content:"";position:absolute;left:0;top:6px;width:14px;height:14px;background:var(--paper);border:2px solid var(--indigo);
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);}
+.timeline li.now::before{background:var(--gold);border-color:var(--gold)}
+.timeline .ph{width:96px;height:72px}
+.timeline ul{margin:6px 0 0;padding-left:18px;font-size:.95rem}
+
+/* two-col lists */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+.plain{list-style:none;padding:0;margin:0}
+.plain li{padding:9px 0;border-bottom:1px solid var(--rule)}
+.plain li:last-child{border-bottom:0}
+
+/* problem corner */
+.problem{position:relative;overflow:hidden;background:var(--hero);color:var(--hero-ink);border-radius:16px;padding:32px 34px}
+.problem::after{content:"";position:absolute;right:-40px;top:-40px;width:200px;height:200px;opacity:.18;
+  background:conic-gradient(from 0deg,var(--lilac),transparent 30%,var(--lilac) 60%,transparent);
+  clip-path:polygon(50% 0,100% 38%,82% 100%,18% 100%,0 38%)}
+.problem p{position:relative;z-index:1;font-size:1.08rem}
+.problem .meta{color:var(--hero-muted)}
+.problem button{position:relative;z-index:1;font-size:.92rem;font-weight:600;background:var(--gold);border:0;color:#1B1606;padding:9px 18px;border-radius:999px;cursor:pointer;margin-top:6px}
+.problem button:hover{background:#dcaa2c}
+.ptabs{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.problem .ptabs button{margin:0;background:rgba(255,255,255,.07);color:var(--hero-ink);border:1px solid rgba(174,184,246,.3);font-weight:500;padding:7px 14px}
+.problem .ptabs button[aria-selected="true"]{background:var(--gold);color:#1B1606;border-color:var(--gold)}
+.ppanel{position:relative;z-index:1}
+.ptitle{font:600 1.25rem "Space Grotesk",sans-serif!important;margin-bottom:8px}
+.gctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:14px 0}
+.gctl label{font:500 .95rem "Space Grotesk",sans-serif;min-width:70px}
+.gctl input[type=range]{accent-color:var(--gold);width:160px}
+.problem .gctl button{margin:0}
+#obcv,#tcv{display:block;width:100%;height:260px;border-radius:10px;background:rgba(0,0,0,.18)}
+#tcv{height:300px}
+.gstats{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+.gstats div{flex:1 1 120px;background:rgba(255,255,255,.06);border:1px solid rgba(174,184,246,.2);border-radius:10px;padding:10px 14px}
+.gstats span{display:block;font:700 1.6rem "Space Grotesk",sans-serif;color:var(--gold)}
+.gstats small{font:400 .82rem "Space Grotesk",sans-serif;color:var(--hero-muted)}
+.solution{position:relative;z-index:1;margin-top:20px;padding-top:20px;border-top:1px solid rgba(174,184,246,.25)}
+
+footer{max-width:1160px;margin:0 auto;padding:28px 32px 48px;color:var(--muted);font-size:.85rem;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:"Space Grotesk",sans-serif}
+
+/* hero interests */
+.interests{list-style:none;padding:0;margin:-12px 0 30px;display:flex;flex-wrap:wrap;gap:8px;max-width:560px}
+.interests li{font:500 .84rem "Space Grotesk",sans-serif;padding:5px 12px;border-radius:999px;color:var(--hero-ink);
+  background:rgba(174,184,246,.12);border:1px solid rgba(174,184,246,.25)}
+.interests-label{font:600 .8rem "Space Grotesk",sans-serif;color:var(--gold);margin:0 0 20px}
+
+/* talk & poster cards */
+.talks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.talk{background:var(--surface);border:1px solid var(--rule);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.talk .ph{aspect-ratio:16/9;border:0;border-radius:0;border-bottom:1px solid var(--rule)}
+.talk .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.badge{align-self:flex-start;font:600 .72rem "Space Grotesk",sans-serif;padding:3px 9px;border-radius:999px;background:var(--gold);color:#1B1606}
+.badge.talkb{background:var(--indigo);color:var(--paper)}
+.talk h4{margin:0;font:600 1rem/1.35 "Space Grotesk",sans-serif}
+.talk .links{margin-top:auto;padding-top:6px;display:flex;gap:14px;font:500 .88rem "Space Grotesk",sans-serif}
+
+/* timeline: degrees with nested roles */
+.timeline .roles{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:10px}
+.timeline .roles li{padding:10px 14px 10px 16px;display:block;background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--sage);border-radius:8px}
+.timeline .roles li::before{display:none}
+.timeline .roles h4{margin:0;font:600 .95rem "Space Grotesk",sans-serif}
+.timeline .roles p{margin:2px 0 0;font-size:.93rem}
+.timeline .deg-note{font-size:.95rem;margin:6px 0 0}
+
+/* mentoring photos */
+.photo-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:26px}
+.photo-row .ph{aspect-ratio:4/3;cursor:zoom-in}
+
+/* activities gallery */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0;list-style:none}
+.filters button{font:500 .88rem "Space Grotesk",sans-serif;padding:6px 14px;border-radius:999px;cursor:pointer;
+  background:var(--surface);color:var(--muted);border:1px solid var(--rule)}
+.filters button[aria-pressed="true"]{background:var(--indigo);color:var(--paper);border-color:var(--indigo)}
+.gallery{columns:3 230px;column-gap:16px}
+.act{break-inside:avoid;margin:0 0 16px;background:var(--surface);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.act .ph{aspect-ratio:4/3;border:0;border-radius:0;cursor:zoom-in}
+.act .ph:not(:has(img)){display:none}
+.ph[hidden]{display:none}
+.act .body{padding:12px 14px 14px}
+.act h4{margin:0 0 2px;font:600 .98rem/1.35 "Space Grotesk",sans-serif}
+.act p{margin:4px 0 0;font-size:.92rem}
+.act .tag{font:600 .72rem "Space Grotesk",sans-serif;color:var(--sage)}
+.act a{font:500 .86rem "Space Grotesk",sans-serif;display:inline-block;margin:8px 12px 0 0}
+
+.act .ph.doc{background:#fff}
+.act .ph.doc img{object-fit:contain;padding:10px}
+/* lightbox */
+dialog.lb{border:0;padding:0;background:transparent;max-width:min(92vw,1100px);max-height:90vh}
+dialog.lb::backdrop{background:rgba(8,10,24,.85)}
+dialog.lb img{max-width:100%;max-height:82vh;border-radius:8px;margin:0 auto}
+dialog.lb p{color:#EEF1FF;text-align:center;font:500 .95rem "Space Grotesk",sans-serif;margin:10px 0 0}
+dialog.lb button{position:fixed;top:16px;right:16px;width:40px;height:40px;border-radius:50%;border:0;background:#EEF1FF;color:#18203A;font-size:1.3rem;cursor:pointer}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1.2fr;gap:28px;align-items:stretch}
+.contact .card{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:22px 24px}
+.contact dl{margin:0;display:grid;gap:14px}
+.contact dt{font:600 .8rem "Space Grotesk",sans-serif;color:var(--muted)}
+.contact dd{margin:2px 0 0}
+.map{border-radius:14px;overflow:hidden;border:1px solid var(--rule);min-height:300px}
+.map iframe{width:100%;height:100%;min-height:300px;border:0;display:block}
+:root[data-theme="dark"] .map iframe{filter:invert(.9) hue-rotate(180deg)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .map iframe{filter:invert(.9) hue-rotate(180deg)}}
+
+/* INMAS album */
+.feat.album{grid-column:1/-1;display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:center;background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:14px}
+.feat.album .txt{padding:8px 12px 8px 0}
+.album-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,1fr);gap:8px;aspect-ratio:4/3}
+.album-grid .ph{margin:0;border:0;border-radius:8px;aspect-ratio:auto;min-height:0;height:100%}
+.album-grid .a-main{grid-column:1/4;grid-row:1/3}
+.album-grid .ph:nth-child(2){grid-column:4;grid-row:1}
+.album-grid .ph:nth-child(3){grid-column:4;grid-row:2}
+.album-grid .ph:nth-child(4){grid-column:1/3;grid-row:3}
+.album-grid .ph:nth-child(5){grid-column:3/5;grid-row:3}
+.album-grid .extra{display:none}
+.album-grid .more::after{content:attr(data-more);position:absolute;inset:0;display:grid;place-items:center;
+  background:rgba(11,16,48,.55);color:#fff;font:600 1.4rem "Space Grotesk",sans-serif;pointer-events:none}
+.album-grid img{transition:transform .3s}
+.album-grid .ph:hover img{transform:scale(1.04)}
+@media (prefers-reduced-motion: reduce){.album-grid img{transition:none}}
+.linkbtn{background:none;border:0;padding:0;color:var(--indigo);font:500 .95em "Space Grotesk",sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+dialog.lb .nav{position:fixed;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(238,241,255,.9);color:#18203A;font-size:1.4rem;cursor:pointer}
+dialog.lb .prev{left:16px} dialog.lb .next{right:16px;left:auto}
+dialog.lb .count{opacity:.7;margin-left:8px}
+
+/* timeline photo strip */
+.timeline .ph.tall{width:120px;height:160px}
+.timeline li>div{min-width:0}
+.strip .ph{min-width:0;width:auto;height:auto}
+.strip-label{margin:16px 0 8px}
+.strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;max-width:520px}
+.strip .ph{aspect-ratio:1;border:0;border-radius:8px}
+.strip .extra{display:none}
+.strip .more::after{content:attr(data-more);position:absolute;inset:0;display:grid;place-items:center;
+  background:rgba(11,16,48,.55);color:#fff;font:600 1.1rem "Space Grotesk",sans-serif;pointer-events:none}
+
+/* empty photo slots disappear: a card without a photo becomes a clean text card */
+.ph:not(:has(img)){display:none}
+.feat.wide:not(:has(.ph img)){display:block;padding:22px 24px}
+.feat.wide:not(:has(.ph img)) .txt{padding:0}
+.thread:not(:has(.ph img)){grid-template-columns:1fr}
+.feat:not(.wide):not(.album):not(:has(.ph img)){background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:18px 20px}
+.photo-row:not(:has(img)){display:none}
+
+/* ================= mobile ================= */
+@media (max-width:900px){
+  .hero-in{grid-template-columns:1fr;padding:40px 16px 56px;gap:16px}
+  .capsid-wrap{order:-1;max-width:240px;margin-bottom:18px}
+  .topnav-in{padding:0 16px;gap:12px}
+  .brand span{display:none}
+  main{padding:0 16px 24px}
+  section{grid-template-columns:1fr;gap:20px;padding:44px 0}
+  .sec-head h2{position:static}
+  .about{grid-template-columns:1fr;gap:20px}
+  .portrait{width:110px}
+  .featured,.cols{grid-template-columns:1fr}
+  .feat.wide{grid-template-columns:1fr;padding:10px}
+  .feat.wide .txt{padding:4px 6px 8px}
+  .thread{grid-template-columns:1fr}
+  .thread .ph{aspect-ratio:16/9}
+  .news li{grid-template-columns:1fr;gap:0}
+  .timeline li{grid-template-columns:1fr}
+  .timeline .ph{display:none}
+  .timeline .strip .ph:not(.extra){display:block}
+  .strip{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+  .problem{padding:24px 20px}
+  .talks,.contact{grid-template-columns:1fr}
+  .mentor-photo{grid-template-columns:1fr}
+  .mentor-photo .ph{max-width:320px}
+  .feat.album{grid-template-columns:1fr;gap:14px;padding:10px}
+  .feat.album .txt{padding:4px 6px 8px}
+  .photo-row{grid-template-columns:1fr 1fr}
+  .interests{margin-top:-8px}
+  footer{padding:20px 16px 36px}
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="hero-in">
+    <div>
+      <h1>Purba Biswas</h1>
+      <p class="who"><strong>PhD student, Applied Mathematics</strong> · <a class="hero-link" href="https://case.edu">Case Western Reserve University</a></p>
+      <p class="q">How do simple geometric rules build a virus, how does chance decide whether an epidemic takes off, and how can data help us predict what comes next?</p>
+      <p class="interests-label">Research interests</p>
+      <ul class="interests">
+        <li>Mathematical Biology</li><li>Stochastic Processes</li><li>Epidemic Modeling</li>
+        <li>Viral Capsid Self-Assembly</li><li>Graph Theory &amp; Aperiodic Tilings</li>
+        <li>Dynamical Systems</li><li>Numerical Analysis</li><li>Machine Learning</li>
+      </ul>
+      <div class="btns">
+        <a class="btn primary" href="cv.pdf"><i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>Download CV</a>
+        <a class="btn" href="mailto:purba.biswas@case.edu"><i class="fa-solid fa-envelope" aria-hidden="true"></i>Email</a>
+      </div>
+      <ul class="icons" aria-label="Profiles">
+        <li><a href="https://scholar.google.com/citations?user=eGLWJigAAAAJ" title="Google Scholar" aria-label="Google Scholar"><i class="fa-brands fa-google-scholar"></i></a></li>
+        <li><a href="https://orcid.org/0009-0001-2026-4228" title="ORCID" aria-label="ORCID"><i class="fa-brands fa-orcid"></i></a></li>
+        <li><a href="https://www.researchgate.net/profile/Purba-Biswas" title="ResearchGate" aria-label="ResearchGate"><i class="fa-brands fa-researchgate"></i></a></li>
+        <li><a href="https://www.linkedin.com/in/purba-biswas/" title="LinkedIn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a></li>
+        <li><a href="https://mathstats.case.edu/student/purba-biswas/" title="CWRU profile" aria-label="CWRU profile"><i class="fa-solid fa-building-columns"></i></a></li>
+      </ul>
+    </div>
+    <div class="capsid-wrap">
+      <canvas id="capsid" role="img" aria-label="A rotating icosahedral capsid with 12 five-fold vertices"></canvas>
+      <div class="capsid-key" aria-hidden="true"><i style="background:var(--gold)"></i>12 pentamers<i style="background:var(--lilac)"></i>hexamers</div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= NAV ================= -->
+<nav class="topnav" aria-label="Sections">
+  <div class="topnav-in">
+    <a class="brand" href="#top" onclick="window.scrollTo({top:0});return false;">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1l8.5 6.2-3.2 10H4.7L1.5 7.2z" fill="var(--gold)"/></svg><span>Purba Biswas</span></a>
+    <ol>
+      <li><a href="#about">About</a></li>
+      <li><a href="#featured">Featured</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#papers">Papers &amp; talks</a></li>
+      <li><a href="#path">Path</a></li>
+      <li><a href="#teaching">Teaching</a></li>
+      <li><a href="#service">Awards</a></li>
+      <li><a href="#beyond">Beyond research</a></li>
+      <li><a href="#problem">Puzzles</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ol>
+    <button class="mode" id="mode" type="button" aria-label="Switch light or dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="sec-head"><h2>About</h2></div>
+  <div class="sec-body about">
+    <div class="portrait">
+      <span>PB</span>
+      <img src="images/headshot.jpg" alt="Purba Biswas" onerror="this.remove()">
+    </div>
+    <div>
+      <p class="lede">I use mathematics and data to understand complex systems, from the tilings that build viral shells and the randomness that decides whether an outbreak survives, to neural networks that forecast energy demand.</p>
+      <p>I am a PhD student in Applied Mathematics at <a href="https://case.edu">Case Western Reserve University</a>. My work combines graph theory and aperiodic tilings, stochastic modeling, and machine learning. I am interested in how viruses assemble, how diseases spread, and how models learned from data can make reliable predictions. My earlier work used recurrent neural networks to forecast electric energy consumption.</p>
+      <p>Before CWRU, I earned an MS in Applied Mathematics at the <a href="https://www.udel.edu">University of Delaware</a>, where I worked with Prof. John R. Jungck on quasicrystalline models of viral capsids. Before that, I earned a BS and MS in Mathematics at <a href="https://juniv.edu">Jahangirnagar University</a> in Bangladesh.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURED ================= -->
+<section id="featured">
+  <div class="sec-head"><h2>Featured</h2></div>
+  <div class="sec-body featured">
+    <article class="feat wide">
+      <figure class="ph"><img src="images/nitmb-poster.jpg" alt="With Prof. William Kath and Prof. Reidun Twarock at my poster, NITMB MathBio Convergence Conference, Chicago" onerror="this.remove()"><span class="label">nitmb-poster.jpg</span></figure>
+      <div class="txt">
+        <div class="kicker">Poster · Chicago · Aug 2025</div>
+        <h3><a class="h-link" href="https://www.nitmb.org">NSF–Simons NITMB</a> MathBio Convergence Conference</h3>
+        <p>I presented graph-theoretic analyses of aperiodic polykite tessellations and how they inform models of viral capsid assembly, with competitive travel funding.</p>
+        <p class="meta">Pictured with Prof. William Kath (Northwestern University, NITMB) and Prof. Reidun Twarock (University of York).</p>
+      </div>
+    </article>
+    <article class="feat wide" data-gallery="inmas">
+      <figure class="ph"><img src="images/inmas/mentors.jpg" alt="With my INMAS mentors, Prof. Fadil Santosa and Dr. Martin-Daniel Lacasse"></figure>
+      <figure class="ph" hidden><img src="images/inmas/cohort.jpg" alt="The INMAS cohort at Johns Hopkins University"></figure>
+      <div class="txt">
+        <div class="kicker"><a class="k-link" href="https://engineering.jhu.edu/ams/">Johns Hopkins</a> hub · Oct 2024 – May 2025</div>
+        <h3><a class="h-link" href="https://inmas-math.github.io">INMAS Fellowship</a></h3>
+        <p>The NSF Internship Network in the Mathematical Sciences trained me in Python, statistics, and machine learning for work beyond academia. I worked on team projects with mentors Prof. Fadil Santosa and Dr. Martin-Daniel Lacasse. <button type="button" class="linkbtn" data-open="inmas">See cohort photo</button></p>
+      </div>
+    </article>
+    <article class="feat">
+      <figure class="ph"><img src="images/3mt.jpg" alt="Three Minute Thesis talk" onerror="this.remove()"><span class="label">3mt.jpg</span></figure>
+      <div class="kicker">Three Minute Thesis · 2026</div>
+      <h3>From Patterns to Viral Shells</h3>
+      <p>My research in three minutes and one slide. <a href="https://www.my-thesis.org/video/patterns-viral-shells-purba-biswas">Watch the talk</a></p>
+    </article>
+    <article class="feat">
+      <figure class="ph"><img src="images/capsid-models.jpg" alt="3D-printed capsomere models" onerror="this.remove()"><span class="label">capsid-models.jpg</span></figure>
+      <div class="kicker">Delaware · 2024–25</div>
+      <h3>Tiles you can hold</h3>
+      <p>Our junction analysis guided where magnets go on 3D-printed capsomere models, built with Prof. Donald Plante (UNH).</p>
+    </article>
+    <article class="feat">
+      <figure class="ph"><img src="images/hpc-seminar.jpg" alt="HPC seminar organized by the SIAM Student Chapter" onerror="this.remove()"><span class="label">hpc-seminar.jpg</span></figure>
+      <div class="kicker">SIAM Student Chapter · Nov 2026</div>
+      <h3>High-Performance Computing seminar</h3>
+      <p>As chapter treasurer, I organized a seminar introducing graduate students to HPC at CWRU.</p>
+    </article>
+    <article class="feat">
+      <figure class="ph"><img src="images/outreach.jpg" alt="High-school mathematics workshop" onerror="this.remove()"><span class="label">outreach.jpg</span></figure>
+      <div class="kicker">Outreach · Summer 2024</div>
+      <h3>Math for high-school students</h3>
+      <p>I co-led a seven-week workshop on knot theory and DNA, fractals, Voronoi diagrams, and epidemic models for students from underrepresented groups.</p>
+    </article>
+    <article class="feat wide">
+      <figure class="ph"><img src="images/gbd.jpg" alt="Global Burden of Disease collaboration" onerror="this.remove()"><span class="label">gbd.jpg</span></figure>
+      <div class="txt">
+      <div class="kicker"><a class="k-link" href="https://www.healthdata.org">IHME</a> · since Nov 2025</div>
+      <h3>Global Burden of Disease collaborator</h3>
+      <p>I review GBD 2023 manuscripts on disease burden worldwide, from brain cancer to respiratory infections. I completed IHME's Introduction to GBD course. <a href="files/gbd-course-certificate.jpg">Certificate</a></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= RESEARCH ================= -->
+<section id="research">
+  <div class="sec-head"><h2>Research</h2></div>
+  <div class="sec-body threads">
+    <div class="thread">
+      <div>
+        <h3>Aperiodic tilings and viral capsids</h3>
+        <p>Many viruses build their shells from repeated protein tiles. With Prof. Jungck, I model quasicrystalline capsids using the newly discovered aperiodic polykite "einstein" tiles: hats, turtles, hares, and squirrels.</p>
+        <ul>
+          <li>Graph-theoretic classification of tessellations: Hamiltonian cycles, Heesch numbers, Delaunay triangulations</li>
+          <li>Junction types between neighboring tiles and how often they occur</li>
+        </ul>
+      </div>
+      <figure class="ph"><img src="images/polykite.png" alt="Polykite tessellation figure" onerror="this.remove()"><span class="label">polykite.png</span></figure>
+    </div>
+    <div class="thread">
+      <div>
+        <h3>Stochastic epidemic dynamics</h3>
+        <p>Even when \(R_0 &gt; 1\), an outbreak can die out by chance. I compare early extinction in direct-transmission (SEIR) and vector-borne (Ross–Macdonald) models at matched \(R_0\), using Gillespie simulation and branching-process theory.</p>
+      </div>
+      <figure class="ph"><img src="images/epidemic.png" alt="Stochastic epidemic simulation paths" onerror="this.remove()"><span class="label">epidemic.png</span></figure>
+    </div>
+    <div class="thread">
+      <div>
+        <h3>Machine learning and forecasting</h3>
+        <p>How much electricity will a home, a city, or a country need tomorrow? With collaborators, I used recurrent neural networks to learn patterns in past energy use and predict future consumption, work that supports planning for smart homes and power grids.</p>
+        <ul>
+          <li>Recurrent neural networks for time-series forecasting of electric energy consumption (<em>Int. J. Smartcare Home</em>, 2021)</li>
+          <li>Machine-learning prediction of solar energy consumption patterns (BS project)</li>
+          <li>Image processing and bioinformatics for biological data</li>
+        </ul>
+      </div>
+      <figure class="ph"><img src="images/ml.png" alt="Neural network forecasting results" onerror="this.remove()"><span class="label">ml.png</span></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NEWS ================= -->
+<section id="news">
+  <div class="sec-head"><h2>News</h2></div>
+  <div class="sec-body">
+    <ul class="news">
+      <li><span class="meta">Nov 2026</span><span>Organized a High-Performance Computing seminar for the SIAM Student Chapter at CWRU.</span></li>
+      <li><span class="meta">Fall 2026</span><span>Teaching problem sessions for Multivariable Calculus (MATH 223).</span></li>
+      <li><span class="meta">2026</span><span>Gave a Three Minute Thesis talk, <em>From Patterns to Viral Shells</em>. <a href="https://www.my-thesis.org/video/patterns-viral-shells-purba-biswas">Watch</a></span></li>
+      <li><span class="meta">Nov 2025</span><span>Became a Global Burden of Disease collaborator with <a href="https://www.healthdata.org">IHME</a>, reviewing GBD 2023 manuscripts.</span></li>
+      <li><span class="meta">Sep 2025</span><span>Paper with John Jungck published in <em>Mathematics</em>.</span></li>
+      <li><span class="meta">Aug 2025</span><span>Started my PhD at <a href="https://case.edu">Case Western Reserve University</a>.</span></li>
+      <li><span class="meta">Aug 2025</span><span>Poster and travel award at the <a href="https://www.nitmb.org">NITMB</a> MathBio Convergence Conference, Chicago.</span></li>
+      <li><span class="meta">May 2025</span><span>Graduated with my MS in Applied Mathematics from the <a href="https://www.udel.edu">University of Delaware</a>. <button type="button" class="linkbtn" data-open="udel-grad">Photos</button></span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= PAPERS ================= -->
+<section id="papers">
+  <div class="sec-head"><h2>Papers &amp; talks</h2></div>
+  <div class="sec-body">
+    <h3 class="sub">Journal articles</h3>
+    <ol class="pubs">
+      <li>J. R. Jungck and <strong>P. Biswas</strong>. <span class="title">Graph theoretic analyses of tessellations of five aperiodic polykite unitiles.</span> <em>Mathematics</em> 13(18):2982, 2025.<span class="plinks"><a href="https://doi.org/10.3390/math13182982">DOI</a><a href="https://www.mdpi.com/2227-7390/13/18/2982">Open access</a></span></li>
+      <li>A. Rahman, T. M. M. Al Masud, and <strong>P. Biswas</strong>. <span class="title">Prediction of electric energy consumption using recurrent neural networks.</span> <em>International Journal of Smartcare Home</em> 1(1):23–34, 2021.<span class="plinks"><a href="https://doi.org/10.21742/26531941.1.1.03">DOI</a><a href="https://gvpress.com/journal/IJSH/vol1_no1/3.pdf">PDF</a></span></li>
+    </ol>
+    <h3 class="sub">Conference abstracts</h3>
+    <ol class="pubs" style="counter-reset:p 2">
+      <li>J. R. Jungck (presenter), D. Plante, <strong>P. Biswas</strong>, and S. Brittain. <span class="title">Self-assembly and self-folding models of viral capsids.</span> BEER Symposium, George Mason University, 2025.</li>
+    </ol>
+    <h3 class="sub">Talks &amp; posters</h3>
+    <div class="talks">
+      <article class="talk">
+        <div class="body">
+          <span class="badge">Poster · co-author</span>
+          <h4>Self folded tetrahedra as a model of protein folding</h4>
+          <span class="meta">M. Collins, <strong>P. Biswas</strong>, J. R. Jungck · <a href="https://de-inbre.org/">Delaware INBRE</a> · 2024</span>
+        </div>
+      </article>
+      <article class="talk">
+        <figure class="ph"><img src="images/poster-thumb.jpg" alt="Poster: graph theoretic analyses of polykite tessellations" onerror="this.remove()"><span class="label">poster-thumb.jpg</span></figure>
+        <div class="body">
+          <span class="badge">Poster</span>
+          <h4>Graph theoretic analyses of tessellations of aperiodic polykite unitiles</h4>
+          <span class="meta">NSF–Simons NITMB MathBio Convergence Conference · Chicago · Aug 2025</span>
+          <div class="links"><a href="files/nitmb-poster.pdf">View poster</a></div>
+        </div>
+      </article>
+      <article class="talk">
+        <figure class="ph"><img src="images/3mt-thumb.jpg" alt="Three Minute Thesis slide" onerror="this.remove()"><span class="label">3mt-thumb.jpg</span></figure>
+        <div class="body">
+          <span class="badge talkb">Talk</span>
+          <h4>From Patterns to Viral Shells</h4>
+          <span class="meta">Three Minute Thesis · 2026</span>
+          <div class="links"><a href="https://www.my-thesis.org/video/patterns-viral-shells-purba-biswas">Watch video</a><a href="https://www.my-thesis.org/profile/purba-biswas">Profile</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TIMELINE ================= -->
+<section id="path">
+  <div class="sec-head"><h2>Path so far</h2></div>
+  <div class="sec-body">
+    <ol class="timeline">
+      <li class="now">
+        <div>
+          <h3>PhD, Applied Mathematics</h3>
+          <p class="meta"><a href="https://case.edu">Case Western Reserve University</a> · Cleveland, OH · 2025 – present (expected May 2030)</p>
+          <ul class="roles">
+            <li><h4>Graduate Teaching Assistant</h4><p class="meta">MATH 223 &amp; MATH 201 · Fall 2025, Spring 2026, Fall 2026</p></li>
+            <li><h4>Treasurer, <a href="https://www.siam.org">SIAM</a> Student Chapter</h4><p class="meta">Organized a High-Performance Computing seminar · Nov 2026</p></li>
+          </ul>
+        </div>
+        <figure class="ph"><img src="images/cwru.jpg" alt="" onerror="this.remove()"></figure>
+      </li>
+      <li data-gallery="udel-grad">
+        <div>
+          <h3>MS, Applied Mathematics</h3>
+          <p class="meta"><a href="https://www.udel.edu">University of Delaware</a> · Newark, DE · Jul 2023 – May 2025</p>
+          <p class="deg-note">Advisor: Prof. John R. Jungck. Passed PhD preliminary exams in Real Analysis, Linear Algebra, and Numerical Analysis.</p>
+          <ul class="roles">
+            <li><h4>INMAS Fellow</h4><p class="meta"><a href="https://inmas-math.github.io">NSF Internship Network in the Mathematical Sciences</a>, <a href="https://engineering.jhu.edu/ams/">Johns Hopkins</a> hub · Oct 2024 – May 2025</p><p>Mentors: Prof. Fadil Santosa and Dr. Martin-Daniel Lacasse</p></li>
+            <li><h4>GEMS Fellow and Research Assistant</h4><p class="meta"><a href="https://www.udel.edu/academics/colleges/cas/units/departments/mathematical-sciences/">Mathematical Sciences</a> and <a href="https://dbi.udel.edu">Delaware Biotechnology Institute</a> · Jun 2024 – May 2025</p><p>Quasicrystalline models of viral capsids with aperiodic polykite tiles</p></li>
+            <li><h4>Graduate Teaching Assistant</h4><p class="meta">MATH 241 · Fall 2023, Spring 2024, Fall 2024, Spring 2025</p></li>
+          </ul>
+          <p class="strip-label meta">Graduated May 24, 2025 · <button type="button" class="linkbtn" data-open="udel-grad">See photos</button></p>
+          <figure class="ph" hidden><img src="images/udel-grad/steps.jpg" alt="Celebrating on the steps of Memorial Hall, University of Delaware"></figure>
+        </div>
+        <figure class="ph tall"><img src="images/udel-grad/portrait.jpg" alt="Graduation portrait, MS in Applied Mathematics, University of Delaware"></figure>
+      </li>
+      <li>
+        <div>
+          <h3>MS, Mathematics</h3>
+          <p class="meta"><a href="https://juniv.edu/institute/math">Jahangirnagar University</a> · Savar, Dhaka · Apr 2021 – Oct 2022</p>
+          <p class="deg-note">Thesis: Poiseuille flow of incompressible fluid, analytical and finite-difference approaches.</p>
+          <ul class="roles">
+            <li><h4>Research Assistant, Biomedical Physics Lab</h4><p class="meta">Jahangirnagar University · 2022 – 2023</p><p>With Dr. Kabir Uddin Sikder</p></li>
+          </ul>
+        </div>
+        <figure class="ph"><img src="images/ju.jpg" alt="" onerror="this.remove()"></figure>
+      </li>
+      <li>
+        <div>
+          <h3>BS (Honors), Mathematics</h3>
+          <p class="meta"><a href="https://juniv.edu/institute/math">Jahangirnagar University</a> · Savar, Dhaka · 2016 – 2021</p>
+          <p class="deg-note">Project: machine-learning prediction of solar energy consumption. University Merit Scholarship.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= TEACHING ================= -->
+<section id="teaching">
+  <div class="sec-head"><h2>Teaching &amp; mentoring</h2></div>
+  <div class="sec-body cols">
+    <div>
+      <h3 class="sub">Teaching</h3>
+      <ul class="plain">
+        <li><strong>Graduate Teaching Assistant, <a href="https://mathstats.case.edu">CWRU</a></strong><br><span class="meta">MATH 223 &amp; MATH 201 · Fall 2025, Spring 2026, Fall 2026</span></li>
+        <li><strong>Graduate Teaching Assistant, <a href="https://www.udel.edu/academics/colleges/cas/units/departments/mathematical-sciences/">University of Delaware</a></strong><br><span class="meta">MATH 241 · Fall 2023, Spring 2024, Fall 2024, Spring 2025</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="sub">Mentoring &amp; outreach</h3>
+      <ul class="plain">
+        <li>Mentored three undergraduate researchers from underrepresented groups, funded by the SIAM–Simons summer program and DE-INBRE <span class="meta">· Jungck Lab, 2024</span></li>
+        <li>Mentored two undergraduates in for-credit research</li>
+        <li>Co-led a seven-week summer workshop for high-school students from underrepresented groups and their teachers: knot theory and DNA, fractals, Voronoi diagrams, and epidemic models</li>
+      </ul>
+    </div>
+    <figure class="mentor-photo">
+      <div class="ph"><img src="images/inbre-poster.jpg" alt="At the Delaware INBRE poster, Self Folded Tetrahedra as a Model of Protein Folding"></div>
+      <figcaption><span class="kicker">Delaware INBRE · Summer 2024</span><br>With my mentee Mahogany Collins's poster, <em>Self Folded Tetrahedra as a Model of Protein Folding</em> (M. Collins, P. Biswas, J. R. Jungck), supported by <a href="https://de-inbre.org/">Delaware INBRE</a>.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ================= AWARDS & SERVICE ================= -->
+<section id="service">
+  <div class="sec-head"><h2>Awards &amp; service</h2></div>
+  <div class="sec-body">
+    <div class="cols">
+      <div>
+        <h3 class="sub">Awards &amp; fellowships</h3>
+        <ul class="plain">
+          <li>Travel Award, <a href="https://www.nitmb.org">NITMB</a> MathBio Convergence Conference <span class="meta">· 2025</span></li>
+          <li>Travel Support, Kansas Math Symposium, Wichita State <span class="meta">· 2025</span></li>
+          <li><a href="https://inmas-math.github.io">INMAS</a> Fellowship <span class="meta">· 2024–25</span></li>
+          <li>GEMS Summer Research Fellowship, University of Delaware <span class="meta">· 2024</span></li>
+          <li>University Merit Scholarship, Jahangirnagar University <span class="meta">· 2020–22</span></li>
+          <li>Finalist, Silver Honor, International Astronomy and Astrophysics Competition <span class="meta">· 2020</span></li>
+          <li>Finalist, Bronze Honor, International Youth Math Challenge <span class="meta">· 2020</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="sub">Service &amp; memberships</h3>
+        <ul class="plain">
+          <li>Treasurer, <a href="https://www.siam.org">SIAM</a> Student Chapter at CWRU</li>
+          <li>GBD Collaborator, <a href="https://www.healthdata.org">Institute for Health Metrics and Evaluation</a> (manuscript reviewer)</li>
+          <li>Class President, Department of Mathematics, Jahangirnagar University <span class="meta">· 2016–22</span></li>
+          <li>Joint Secretary and Board of Directors, E-Business Club, Jahangirnagar University</li>
+          <li>Member: SIAM, AMS, AWM (UD chapter), WePOWER</li>
+        </ul>
+      </div>
+    </div>
+    <h3 class="sub">Training &amp; certificates</h3>
+    <ul class="plain">
+      <li>Introduction to GBD, Institute for Health Metrics and Evaluation <span class="meta">· <a href="files/gbd-course-certificate.jpg">certificate</a></span></li>
+      <li>Responsible Conduct of Research, CITI Program (University of Delaware) <span class="meta">· 2025 · <a href="files/citi-rcr-certificate.jpg">certificate</a></span></li>
+    </ul>
+    <h3 class="sub">Tools</h3>
+    <ul class="chips" style="margin-top:4px">
+      <li class="chip">MATLAB</li><li class="chip">Python</li><li class="chip">R</li><li class="chip">C++</li><li class="chip">LaTeX</li><li class="chip">Beamer</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= BEYOND RESEARCH ================= -->
+<section id="beyond">
+  <div class="sec-head"><h2>Beyond research</h2></div>
+  <div class="sec-body">
+    <p>Leadership, competitions, and activities outside the lab. Tap a photo to see it larger.</p>
+    <ul class="filters" id="filters"></ul>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- ================= PUZZLES & PLAY ================= -->
+<section id="problem">
+  <div class="sec-head"><h2>Puzzles &amp; play</h2></div>
+  <div class="sec-body">
+    <div class="problem">
+      <div class="ptabs" role="tablist" aria-label="Puzzles and games">
+        <button role="tab" aria-selected="true" aria-controls="pz1" id="t1">Puzzle 1</button>
+        <button role="tab" aria-selected="false" aria-controls="pz2" id="t2">Puzzle 2</button>
+        <button role="tab" aria-selected="false" aria-controls="pz3" id="t3">Puzzle 3</button>
+        <button role="tab" aria-selected="false" aria-controls="pz4" id="t4"><i class="fa-solid fa-virus" aria-hidden="true"></i> Outbreak game</button>
+        <button role="tab" aria-selected="false" aria-controls="pz5" id="t5"><i class="fa-solid fa-dice-d20" aria-hidden="true"></i> Build a capsid</button>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz1" aria-labelledby="t1">
+        <p class="ptitle">Why 12 pentagons?</p>
+        <p>A closed shell is tiled by hexagons and pentagons, with exactly three tiles meeting at every vertex. Show that it must contain <strong>exactly 12 pentagons</strong>, no matter how many hexagons there are.</p>
+        <p class="meta">This is why every icosahedral virus, small or enormous, has 12 five-fold vertices: the gold points on the spinning capsid at the top of this page.</p>
+        <button type="button" class="solbtn" aria-expanded="false">Show solution</button>
+        <div class="solution" hidden>
+          <p>Let \(p\) and \(h\) be the numbers of pentagons and hexagons, so \(F = p + h\). Each edge borders two faces and each vertex touches three, so</p>
+          $$E = \tfrac{1}{2}(5p + 6h), \qquad V = \tfrac{1}{3}(5p + 6h).$$
+          <p>Euler's formula \(V - E + F = 2\) gives</p>
+          $$\tfrac{1}{3}(5p+6h) - \tfrac{1}{2}(5p+6h) + p + h = 2 \;\Longrightarrow\; \tfrac{p}{6} = 2 \;\Longrightarrow\; p = 12.$$
+          <p>The hexagons cancel completely, so \(h\) can be anything.</p>
+        </div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz2" aria-labelledby="t2" hidden>
+        <p class="ptitle">Can a growing outbreak still vanish?</p>
+        <p>An outbreak starts with one infected person. Each infected person, independently, infects <strong>2</strong> new people with probability \(p = \tfrac34\), and nobody with probability \(\tfrac14\). On average each case causes \(R_0 = 2p = 1.5\) new cases, so the outbreak "should" grow. What is the probability that it eventually dies out?</p>
+        <button type="button" class="solbtn" aria-expanded="false">Show solution</button>
+        <div class="solution" hidden>
+          <p>Let \(q\) be the extinction probability. The outbreak dies out if the first case infects nobody, or infects two people whose separate outbreaks <em>both</em> die out:</p>
+          $$q = \tfrac14 + \tfrac34\,q^2 \;\Longleftrightarrow\; 3q^2 - 4q + 1 = 0 \;\Longleftrightarrow\; (3q-1)(q-1) = 0.$$
+          <p>Branching-process theory says the extinction probability is the <em>smallest</em> root in \([0,1]\), so \(q = \tfrac13\). Even with \(R_0 &gt; 1\), one outbreak in three disappears by chance. Try it in the outbreak game.</p>
+        </div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz3" aria-labelledby="t3" hidden>
+        <p class="ptitle">Counting the pieces of a virus</p>
+        <p>In Caspar–Klug theory, an icosahedral capsid with triangulation number \(T\) is built from \(60T\) identical proteins, grouped into 12 pentamers (5 proteins each) and some number of hexamers (6 proteins each). How many hexamers are there? How many for \(T = 3\)?</p>
+        <button type="button" class="solbtn" aria-expanded="false">Show solution</button>
+        <div class="solution" hidden>
+          <p>Count proteins two ways. If there are \(H\) hexamers,</p>
+          $$60T = 5\cdot 12 + 6H \;\Longrightarrow\; H = 10(T-1).$$
+          <p>For \(T = 3\): \(180\) proteins, \(12\) pentamers and \(20\) hexamers. Allowed values are \(T = h^2 + hk + k^2\) for whole numbers \(h, k\), so \(T = 1, 3, 4, 7, 9, 12, 13, \dots\) Build your own in the capsid game.</p>
+        </div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz4" aria-labelledby="t4" hidden>
+        <p class="ptitle">Outbreak game</p>
+        <p class="meta">Each case infects a random number of new people with mean \(R_0\) (Poisson). Run 100 outbreaks and see how many die out by chance, compared with branching-process theory.</p>
+        <div class="gctl">
+          <label for="r0">\(R_0\) = <output id="r0v">1.5</output></label>
+          <input type="range" id="r0" min="0.5" max="3" step="0.1" value="1.5">
+          <button type="button" id="runob">Run 100 outbreaks</button>
+        </div>
+        <canvas id="obcv" aria-label="Number of active cases per generation for 100 simulated outbreaks"></canvas>
+        <div class="gstats" aria-live="polite">
+          <div><span id="obsim">–</span><small>died out in simulation</small></div>
+          <div><span id="obth">–</span><small>predicted by theory</small></div>
+        </div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz5" aria-labelledby="t5" hidden>
+        <p class="ptitle">Build a capsid</p>
+        <p class="meta">Pick \(h\) and \(k\). The arrow walks \(h\) steps one way and \(k\) steps after a 60° turn on the hexagonal lattice; the triangle it spans is one of the 20 faces of the capsid.</p>
+        <div class="gctl">
+          <label for="hh">\(h\) = <output id="hv">1</output></label>
+          <input type="range" id="hh" min="0" max="4" step="1" value="1">
+          <label for="kk">\(k\) = <output id="kv">1</output></label>
+          <input type="range" id="kk" min="0" max="4" step="1" value="1">
+        </div>
+        <canvas id="tcv" aria-label="Triangular capsid face on a hexagonal lattice"></canvas>
+        <div class="gstats" aria-live="polite">
+          <div><span id="tT">3</span><small>\(T = h^2+hk+k^2\)</small></div>
+          <div><span id="tP">180</span><small>proteins (60T)</small></div>
+          <div><span>12</span><small>pentamers</small></div>
+          <div><span id="tH">20</span><small>hexamers</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="sec-head"><h2>Contact</h2></div>
+  <div class="sec-body contact">
+    <div class="card">
+      <dl>
+        <div><dt>Email</dt><dd><a href="mailto:purba.biswas@case.edu">purba.biswas@case.edu</a></dd></div>
+        <div><dt>Department</dt><dd><a href="https://mathstats.case.edu">Mathematics, Applied Mathematics and Statistics</a><br><a href="https://case.edu">Case Western Reserve University</a><br>2145 Adelbert Rd, Cleveland, OH 44106</dd></div>
+        <div><dt>Profiles</dt><dd><ul class="icons" aria-label="Profiles">
+          <li><a href="https://scholar.google.com/citations?user=eGLWJigAAAAJ" title="Google Scholar" aria-label="Google Scholar"><i class="fa-brands fa-google-scholar"></i></a></li>
+          <li><a href="https://orcid.org/0009-0001-2026-4228" title="ORCID" aria-label="ORCID"><i class="fa-brands fa-orcid"></i></a></li>
+          <li><a href="https://www.researchgate.net/profile/Purba-Biswas" title="ResearchGate" aria-label="ResearchGate"><i class="fa-brands fa-researchgate"></i></a></li>
+          <li><a href="https://www.linkedin.com/in/purba-biswas/" title="LinkedIn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a></li>
+          <li><a href="https://mathstats.case.edu/student/purba-biswas/" title="CWRU profile" aria-label="CWRU profile"><i class="fa-solid fa-building-columns"></i></a></li>
+        </ul></dd></div>
+      </dl>
+    </div>
+    <div class="map">
+      <iframe title="Map of Case Western Reserve University" loading="lazy"
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-81.6175%2C41.4990%2C-81.5985%2C41.5100&amp;layer=mapnik&amp;marker=41.5043%2C-81.6079"></iframe>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- photo viewer -->
+<dialog class="lb" id="lb"><button type="button" id="lbclose" aria-label="Close">&times;</button><button type="button" class="nav prev" id="lbprev" aria-label="Previous photo">&#8249;</button><button type="button" class="nav next" id="lbnext" aria-label="Next photo">&#8250;</button><img id="lbimg" alt=""><p><span id="lbcap"></span><span class="count" id="lbcount"></span></p></dialog>
+
+<footer>
+  <span>© 2026 Purba Biswas</span>
+  <span>Last updated November 2026</span>
+</footer>
+
+<script>
+/* ---------- rotating capsid: frequency-2 geodesic icosahedron ---------- */
+(function(){
+  const cv=document.getElementById('capsid'), ctx=cv.getContext('2d');
+  const phi=(1+Math.sqrt(5))/2;
+  let V=[[-1,phi,0],[1,phi,0],[-1,-phi,0],[1,-phi,0],[0,-1,phi],[0,1,phi],[0,-1,-phi],[0,1,-phi],[phi,0,-1],[phi,0,1],[-phi,0,-1],[-phi,0,1]];
+  const norm=v=>{const l=Math.hypot(...v);return v.map(x=>x/l)};
+  V=V.map(norm);
+  // faces of the icosahedron
+  const F=[];
+  for(let i=0;i<12;i++)for(let j=i+1;j<12;j++)for(let k=j+1;k<12;k++){
+    const d=(a,b)=>Math.hypot(V[a][0]-V[b][0],V[a][1]-V[b][1],V[a][2]-V[b][2]);
+    const e=d(0,5)*1.01; if(d(i,j)<e&&d(j,k)<e&&d(i,k)<e)F.push([i,j,k]);
+  }
+  // subdivide each face once (midpoints pushed to the sphere) — 42 vertices
+  const P=V.slice(), kind=V.map(()=>1), mid={}, E=new Set();
+  const m=(a,b)=>{const key=a<b?a+'_'+b:b+'_'+a; if(mid[key]==null){mid[key]=P.length;P.push(norm(P[a].map((x,i)=>(x+P[b][i])/2)));kind.push(0);}return mid[key]};
+  const add=(a,b)=>E.add(a<b?a+'_'+b:b+'_'+a);
+  F.forEach(([a,b,c])=>{const ab=m(a,b),bc=m(b,c),ca=m(c,a);
+    [[a,ab],[ab,b],[b,bc],[bc,c],[c,ca],[ca,a],[ab,bc],[bc,ca],[ca,ab]].forEach(([x,y])=>add(x,y));});
+  const edges=[...E].map(s=>s.split('_').map(Number));
+
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W=0,H=0,dpr=1;
+  function size(){dpr=Math.min(devicePixelRatio||1,2);const r=cv.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;}
+  size(); addEventListener('resize',size);
+  const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  let t=0.6, drag=null, vx=0.0035, vy=0.0012, ax=0.35;
+  cv.addEventListener('pointerdown',e=>{drag=[e.clientX,e.clientY];cv.setPointerCapture(e.pointerId)});
+  cv.addEventListener('pointermove',e=>{if(!drag)return;t+=(e.clientX-drag[0])*0.01;ax+=(e.clientY-drag[1])*0.01;drag=[e.clientX,e.clientY];draw()});
+  cv.addEventListener('pointerup',()=>drag=null);
+  function draw(){
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+    const gold=css('--gold'), lil=css('--lilac');
+    const R=Math.min(W,H)*0.40, cx=W/2, cy=H/2;
+    const cy1=Math.cos(t),sy=Math.sin(t),cx1=Math.cos(ax),sx=Math.sin(ax);
+    const Q=P.map(([x,y,z])=>{let X=x*cy1+z*sy, Z=-x*sy+z*cy1; let Y=y*cx1-Z*sx; Z=y*sx+Z*cx1;
+      const s=3.2/(3.2-Z); return [cx+X*R*s, cy+Y*R*s, Z];});
+    // edges, back first
+    edges.slice().sort((a,b)=>(Q[a[0]][2]+Q[a[1]][2])-(Q[b[0]][2]+Q[b[1]][2])).forEach(([a,b])=>{
+      const z=(Q[a][2]+Q[b][2])/2, front=z>0;
+      ctx.strokeStyle=lil; ctx.globalAlpha=front?0.75:0.16; ctx.lineWidth=front?1.4:1;
+      ctx.beginPath();ctx.moveTo(Q[a][0],Q[a][1]);ctx.lineTo(Q[b][0],Q[b][1]);ctx.stroke();});
+    // vertices: pentamers gold, hexamers lilac
+    P.map((_,i)=>i).sort((a,b)=>Q[a][2]-Q[b][2]).forEach(i=>{
+      const [x,y,z]=Q[i], front=z>0, five=kind[i]===1;
+      ctx.globalAlpha=front?1:0.25; ctx.fillStyle=five?gold:lil;
+      ctx.beginPath();ctx.arc(x,y,(five?6:3.6)*(0.8+0.25*z),0,7);ctx.fill();
+      if(five&&front){ctx.globalAlpha=.25;ctx.beginPath();ctx.arc(x,y,13,0,7);ctx.fill();}
+    });
+    ctx.globalAlpha=1;
+  }
+  function loop(){ if(!drag){t+=vx;ax+=Math.sin(t*0.5)*vy;} draw(); requestAnimationFrame(loop); }
+  reduce? draw() : loop();
+  new MutationObserver(draw).observe(document.documentElement,{attributes:true});
+})();
+
+/* ---------- Beyond research gallery ----------
+   TO ADD AN ACTIVITY: copy one { ... } line below and change it.
+   img  = a photo or certificate image in the images folder (leave "" for none)
+   link = a certificate PDF or web page (leave "" for none)
+   cat  = one of: Leadership, Competitions, Programs, Activities                         */
+const ACTIVITIES = [
+  {cat:"Leadership",   year:"2019–20", title:"Joint Secretary and Board of Directors, E-Business & Entrepreneurship Club", text:"Organized the club's Annual Symposium 2019–20 and a seminar on presentation skills at Jahangirnagar University. The club later honored me for exceptional dedication and service.", img:"images/ebusiness.jpg", alt:"Speaking at an E-Business & Entrepreneurship Club event, Jahangirnagar University", link:""},
+  {cat:"Leadership",   year:"2022",    title:"Shoktikonna Leadership Cohort, World Bank", site:"https://blogs.worldbank.org/en/endpovertyinsouthasia/inspiring-future-female-leaders-bangladeshs-energy-sector", siteLabel:"About the program", text:"One of 35 young women engineers selected for the first leadership cohort in Bangladesh's renewable energy sector. Completed three months of leadership training and pitched our solution as Team Illuminate in the Solve-a-thon. Also joined an outreach session with World Bank Bangladesh's senior management on how the Bank works. Organized by the World Bank with Devtale Partners, WePOWER, and GIZ Bangladesh.", img:"images/shoktikonna.jpg", alt:"Pitching as Team Illuminate at the Shoktikonna Solve-a-thon, Dhaka", link:"files/shoktikonna-certificate.jpg"},
+  {cat:"Leadership",   year:"2016–22", title:"Class President, Department of Mathematics", text:"Elected class president for six years at Jahangirnagar University, and helped organize the department's cultural programs.", img:"images/class-president.jpg", link:""},
+  {cat:"Programs",     year:"2022–",   title:"WePOWER network member", text:"South Asian Women in Power Sector Professional Network, World Bank.", img:"", link:""},
+  {cat:"Competitions", year:"2020",    title:"Silver Honor — International Astronomy and Astrophysics Competition", text:"Finalist, placed in the top 5% of all participants in the supervised final round. Also received the Award for Excellent Encouragement as a campus ambassador; Jahangirnagar University won the school award for Most Participants & Finalists.", img:"images/iaac-certificate.jpg", doc:true, alt:"IAAC 2020 Silver Honour certificate", link:"https://iaac.space/en/purbiswas"},
+  {cat:"Competitions", year:"2020",    title:"Bronze Honor — International Youth Math Challenge", site:"https://iymc.info", siteLabel:"IYMC", text:"Finalist, placed in the top 20% of all participants in the supervised final round. Also received the IYMC Ambassador Excellence Award.", img:"images/iymc-certificate.jpg", doc:true, alt:"IYMC 2020 Bronze Honour certificate", link:""},
+  {cat:"Activities",   year:"",        title:"BSMB lecture series", text:"", img:"images/bsmb.jpg", link:""},
+  {cat:"Sports",       year:"2019",    title:"Gold medal, women's cycling — Bangabandhu Inter-University Sports Championship", text:"Won gold in cycling against students from 65 universities, covered in the national press. I also competed in swimming, badminton, and athletics at university level.", img:"images/sports.jpg", doc:true, alt:"Newspaper report: 2 JU students win gold medal, Bangabandhu Inter-University Sports Championship 2019", link:""},
+];
+(function(){
+  const gal=document.getElementById('gallery'), fl=document.getElementById('filters');
+  const cats=["All",...new Set(ACTIVITIES.map(a=>a.cat))];
+  const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  gal.innerHTML=ACTIVITIES.map(a=>`<article class="act" data-cat="${esc(a.cat)}">
+    ${a.img?`<figure class="ph zoom${a.doc?' doc':''}"><img src="${esc(a.img)}" alt="${esc(a.alt||a.title)}" onerror="this.remove()"></figure>`:''}
+    <div class="body"><span class="tag">${esc(a.cat)}${a.year?' · '+esc(a.year):''}</span><h4>${esc(a.title)}</h4>
+    ${a.text?`<p>${esc(a.text)}</p>`:''}${a.site?`<a href="${esc(a.site)}" target="_blank" rel="noopener">${esc(a.siteLabel||'Website')}</a> `:''}${a.link?`<a href="${esc(a.link)}" target="_blank" rel="noopener">${a.link.startsWith('http')?'View online':'View certificate'}</a>`:''}</div></article>`).join('');
+  fl.innerHTML=cats.map((c,i)=>`<li><button type="button" aria-pressed="${i===0}">${c}</button></li>`).join('');
+  fl.addEventListener('click',e=>{const b=e.target.closest('button'); if(!b)return;
+    fl.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    gal.querySelectorAll('.act').forEach(el=>el.hidden=!(b.textContent==='All'||el.dataset.cat===b.textContent));});
+})();
+
+/* ---------- photo viewer: tap any photo to enlarge; arrows step through an album ---------- */
+(function(){
+  const lb=document.getElementById('lb'), im=document.getElementById('lbimg'), cap=document.getElementById('lbcap'),
+        cnt=document.getElementById('lbcount'), prev=document.getElementById('lbprev'), next=document.getElementById('lbnext');
+  let list=[], i=0;
+  function show(){ const img=list[i]; im.src=img.src; im.alt=img.alt; cap.textContent=img.alt;
+    const many=list.length>1; prev.hidden=next.hidden=!many; cnt.textContent=many?`${i+1} / ${list.length}`:''; }
+  function open(imgs,k){ list=imgs; i=k; show(); if(!lb.open) lb.showModal(); }
+  document.addEventListener('click',e=>{
+    const btn=e.target.closest('[data-open]');
+    if(btn){ open([...document.querySelectorAll(`[data-gallery="${btn.dataset.open}"] img`)],0); return; }
+    const img=e.target.closest('.ph img'); if(!img) return;
+    const g=img.closest('[data-gallery]');
+    if(g){ const imgs=[...g.querySelectorAll('img')]; open(imgs, imgs.indexOf(img)); }
+    else open([img],0);
+  });
+  prev.onclick=()=>{i=(i-1+list.length)%list.length;show()};
+  next.onclick=()=>{i=(i+1)%list.length;show()};
+  document.addEventListener('keydown',e=>{ if(!lb.open||list.length<2)return;
+    if(e.key==='ArrowLeft')prev.onclick(); if(e.key==='ArrowRight')next.onclick(); });
+  let x0=null; lb.addEventListener('touchstart',e=>x0=e.touches[0].clientX,{passive:true});
+  lb.addEventListener('touchend',e=>{ if(x0==null||list.length<2)return; const dx=e.changedTouches[0].clientX-x0;
+    if(Math.abs(dx)>40)(dx>0?prev:next).onclick(); x0=null; });
+  document.getElementById('lbclose').onclick=()=>lb.close();
+  lb.addEventListener('click',e=>{ if(e.target===lb) lb.close(); });
+})();
+
+/* ---------- light / dark toggle ---------- */
+document.getElementById('mode').addEventListener('click',()=>{
+  const root=document.documentElement;
+  const dark=root.dataset.theme? root.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme=dark?'light':'dark';
+  try{localStorage.setItem('theme',root.dataset.theme)}catch(e){}
+});
+
+/* ---------- puzzles: tabs + solutions ---------- */
+(function(){
+  const tabs=[...document.querySelectorAll('.ptabs [role=tab]')];
+  function sel(t){ tabs.forEach(x=>{const on=x===t; x.setAttribute('aria-selected',on); x.tabIndex=on?0:-1;
+    document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});
+    if(t.id==='t4'&&!window._obRan) runOutbreak(); if(t.id==='t5') drawCapsid(); }
+  tabs.forEach((t,i)=>{ t.addEventListener('click',()=>sel(t));
+    t.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length]; n.focus(); sel(n);} }); });
+  document.querySelectorAll('.solbtn').forEach(b=>b.addEventListener('click',()=>{
+    const sol=b.nextElementSibling, open=sol.hidden; sol.hidden=!open;
+    b.setAttribute('aria-expanded',open); b.textContent=open?'Hide solution':'Show solution'; }));
+})();
+
+function fitCanvas(cv){ const d=Math.min(devicePixelRatio||1,2), r=cv.getBoundingClientRect();
+  cv.width=r.width*d; cv.height=r.height*d; const c=cv.getContext('2d'); c.setTransform(d,0,0,d,0,0); return [c,r.width,r.height]; }
+const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+/* ---------- outbreak game: Galton–Watson branching process ---------- */
+function poisson(l){ const L=Math.exp(-l); let k=0,p=1; do{k++;p*=Math.random();}while(p>L); return k-1; }
+function runOutbreak(){
+  window._obRan=true;
+  const R0=+document.getElementById('r0').value, G=15, CAP=300, runs=[];
+  let died=0;
+  for(let r=0;r<100;r++){ let n=1; const path=[1];
+    for(let g=1;g<=G;g++){ let m=0; for(let i=0;i<n;i++) m+=poisson(R0); n=Math.min(m,CAP); path.push(n); if(n===0) break; }
+    if(n===0) died++; runs.push({path,dead:n===0}); }
+  let q=0; for(let i=0;i<500;i++) q=Math.exp(R0*(q-1));
+  document.getElementById('obsim').textContent=died+'%';
+  document.getElementById('obth').textContent=Math.round(q*100)+'%';
+  const cv=document.getElementById('obcv'); const [c,W,H]=fitCanvas(cv);
+  const pad=36, x=g=>pad+g*(W-pad-10)/G, y=n=>H-pad-Math.log1p(n)/Math.log1p(CAP)*(H-pad-10);
+  c.clearRect(0,0,W,H);
+  c.strokeStyle='rgba(174,184,246,.25)'; c.fillStyle='rgba(185,193,234,.8)'; c.font='11px Space Grotesk, sans-serif';
+  c.beginPath(); c.moveTo(pad,10); c.lineTo(pad,H-pad); c.lineTo(W-10,H-pad); c.stroke();
+  c.fillText('generation →',W-90,H-8); c.fillText('1',pad-12,y(1)+4); c.fillText('10',pad-18,y(10)+4); c.fillText('100',pad-24,y(100)+4); c.save(); c.translate(12,H/2+30); c.rotate(-Math.PI/2); c.fillText('active cases',0,0); c.restore();
+  const gold=cssv('--gold');
+  runs.sort((a,b)=>b.dead-a.dead).forEach(r=>{ c.strokeStyle=r.dead?'rgba(174,184,246,.35)':gold; c.globalAlpha=r.dead?1:.7; c.lineWidth=1.3;
+    c.beginPath(); r.path.forEach((n,g)=>{ g?c.lineTo(x(g),y(n)):c.moveTo(x(g),y(n)); }); c.stroke(); });
+  c.globalAlpha=1;
+}
+document.getElementById('r0').addEventListener('input',e=>document.getElementById('r0v').textContent=(+e.target.value).toFixed(1));
+document.getElementById('runob').addEventListener('click',runOutbreak);
+
+/* ---------- capsid game: Caspar–Klug triangulation number ---------- */
+function drawCapsid(){
+  const h=+document.getElementById('hh').value, k=+document.getElementById('kk').value;
+  document.getElementById('hv').textContent=h; document.getElementById('kv').textContent=k;
+  const T=h*h+h*k+k*k;
+  document.getElementById('tT').textContent=T||'–';
+  document.getElementById('tP').textContent=T?60*T:'–';
+  document.getElementById('tH').textContent=T?10*(T-1):'–';
+  const cv=document.getElementById('tcv'); const [c,W,H]=fitCanvas(cv); c.clearRect(0,0,W,H);
+  const s3=Math.sqrt(3);
+  const U=(i,j)=>[i+j/2, j*s3/2];
+  const pts=T?[U(0,0),U(h,k),U(-k,h+k)]:[U(0,0),U(1,0),U(0,1)];
+  const xs=pts.map(p=>p[0]), ys=pts.map(p=>p[1]);
+  const bw=Math.max(...xs)-Math.min(...xs), bh=Math.max(...ys)-Math.min(...ys);
+  const a=Math.min(70,(W-70)/bw,(H-70)/bh);
+  const cx=(Math.max(...xs)+Math.min(...xs))/2, cy=(Math.max(...ys)+Math.min(...ys))/2;
+  const P=(i,j)=>{const [u,v]=U(i,j); return [W/2+(u-cx)*a, H/2-(v-cy)*a];};
+  const lil=cssv('--lilac'), gold=cssv('--gold');
+  // lattice points
+  c.fillStyle='rgba(174,184,246,.35)';
+  for(let i=-30;i<=30;i++)for(let j=-30;j<=30;j++){ const [x,y]=P(i,j); if(x>-5&&x<W+5&&y>-5&&y<H+5){c.beginPath();c.arc(x,y,2.2,0,7);c.fill();} }
+  if(!T){ c.fillStyle=lil; c.font='14px Space Grotesk, sans-serif'; c.fillText('Pick h or k above 0',16,28); return; }
+  // face: 0, v=(h,k), w = v rotated 60° = (-k, h+k)
+  const A=P(0,0), B=P(h,k), C=P(-k,h+k);
+  c.fillStyle='rgba(201,150,30,.18)'; c.strokeStyle=gold; c.lineWidth=2;
+  c.beginPath(); c.moveTo(...A); c.lineTo(...B); c.lineTo(...C); c.closePath(); c.fill(); c.stroke();
+  // arrow path: h steps along a1, then k steps along a2
+  const M=P(h,0); c.strokeStyle=lil; c.lineWidth=2.5; c.setLineDash([6,5]);
+  c.beginPath(); c.moveTo(...A); c.lineTo(...M); c.lineTo(...B); c.stroke(); c.setLineDash([]);
+  [A,B,C].forEach(p=>{ c.fillStyle=gold; c.beginPath(); c.arc(p[0],p[1],7,0,7); c.fill(); });
+  c.fillStyle=lil; c.font='12px Space Grotesk, sans-serif'; c.fillText('pentamers at the corners',12,H-12);
+}
+['hh','kk'].forEach(id=>document.getElementById(id).addEventListener('input',drawCapsid));
+addEventListener('resize',()=>{ if(!document.getElementById('pz4').hidden) runOutbreak(); if(!document.getElementById('pz5').hidden) drawCapsid(); });
+
+/* ---------- highlight current section in nav ---------- */
+const links=[...document.querySelectorAll('.topnav ol a')];
+const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){
+  links.forEach(a=>{const on=a.getAttribute('href')==='#'+en.target.id; a.classList.toggle('on',on);
+    if(on){const ol=a.closest('ol'); ol.scrollLeft=a.offsetLeft-ol.clientWidth/2+a.clientWidth/2;}}); }}),{rootMargin:'-35% 0px -60% 0px'});
+document.querySelectorAll('main section').forEach(s=>io.observe(s));
+</script>
+</body>
+</html>

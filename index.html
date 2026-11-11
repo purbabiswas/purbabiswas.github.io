@@ -87,6 +87,9 @@ img{max-width:100%;display:block}
 .icons a:hover{background:var(--gold);color:#1B1606;border-color:var(--gold);transform:translateY(-2px)}
 @media (prefers-reduced-motion: reduce){.icons a{transition:none}.icons a:hover{transform:none}}
 .btn i{font-size:.95em}
+.btn.play{border-style:dashed;border-color:rgba(233,191,85,.7)}
+.btn.play:hover{border-style:solid;border-color:var(--gold);background:rgba(233,191,85,.14)}
+.btn.play i{color:var(--gold)}
 .contact .icons{margin-top:8px}
 .contact .icons a{color:var(--indigo);background:var(--paper);border-color:var(--rule)}
 
@@ -218,6 +221,28 @@ h3.sub:first-child{margin-top:0}
 .problem .gctl button{margin:0}
 #obcv,#tcv{display:block;width:100%;height:260px;border-radius:10px;background:rgba(0,0,0,.18)}
 #tcv{height:300px}
+#hatcv{display:block;width:100%;height:360px;border-radius:10px;background:rgba(0,0,0,.18);touch-action:none}
+.problem .gctl button.ghost{background:none;color:var(--hero-ink);border:1px solid rgba(174,184,246,.4)}
+.problem .gctl button:disabled{opacity:.5;cursor:not-allowed}
+.chk{display:inline-flex;align-items:center;gap:6px;font:500 .9rem "Space Grotesk",sans-serif;min-width:0!important}
+.chk input{accent-color:var(--gold);width:16px;height:16px}
+.credit{font-size:.78rem!important;margin-top:12px}
+.credit a{color:var(--hero-muted)}
+.pgroup{font:600 .72rem "Space Grotesk",sans-serif;color:var(--hero-muted);align-self:center;width:100%;margin:4px 0 -2px}
+.pgroup:first-child{margin-top:0}
+.tpick,.r0opts{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.problem .tpick button,.problem .r0opts button{margin:0;background:rgba(255,255,255,.07);color:var(--hero-ink);border:1px solid rgba(174,184,246,.35);font-weight:500}
+.problem .tpick button[aria-pressed="true"]{background:var(--gold);color:#1B1606;border-color:var(--gold)}
+.problem .r0opts button.right{background:#2F7A64;border-color:#7CC7AE;color:#fff}
+.problem .r0opts button.wrong{background:#7a2f3b;border-color:#e08a97;color:#fff}
+#shellcv{display:block;width:100%;height:340px;border-radius:10px;background:radial-gradient(circle at 50% 45%,rgba(174,184,246,.12),rgba(0,0,0,.18) 70%);cursor:grab;touch-action:none}
+#shellcv:active{cursor:grabbing}
+#r0cv{display:block;width:100%;height:240px;border-radius:10px;background:rgba(0,0,0,.18)}
+#dartcv{display:block;width:100%;max-width:340px;height:340px;margin:0 auto;border-radius:10px;background:rgba(0,0,0,.18)}
+.shellex{min-height:1.4em;margin:10px 0 0!important;font:500 .95rem "Space Grotesk",sans-serif!important;color:var(--hero-ink)}
+.r0msg{min-height:1.4em;font:500 1rem "Space Grotesk",sans-serif!important;margin:4px 0 0!important}
+#fc1cv,#fc2cv,#nncv{display:block;width:100%;height:280px;border-radius:10px;background:rgba(0,0,0,.18);touch-action:none}
+#fc1cv{cursor:crosshair}
 .gstats{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
 .gstats div{flex:1 1 120px;background:rgba(255,255,255,.06);border:1px solid rgba(174,184,246,.2);border-radius:10px;padding:10px 14px}
 .gstats span{display:block;font:700 1.6rem "Space Grotesk",sans-serif;color:var(--gold)}
@@ -381,6 +406,7 @@ dialog.lb .count{opacity:.7;margin-left:8px}
       <div class="btns">
         <a class="btn primary" href="cv.pdf"><i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>Download CV</a>
         <a class="btn" href="mailto:purba.biswas@case.edu"><i class="fa-solid fa-envelope" aria-hidden="true"></i>Email</a>
+        <a class="btn play" href="#problem" id="playbtn"><i class="fa-solid fa-gamepad" aria-hidden="true"></i>Bored? Play a math game</a>
       </div>
       <ul class="icons" aria-label="Profiles">
         <li><a href="https://scholar.google.com/citations?user=eGLWJigAAAAJ" title="Google Scholar" aria-label="Google Scholar"><i class="fa-brands fa-google-scholar"></i></a></li>
@@ -729,11 +755,20 @@ dialog.lb .count{opacity:.7;margin-left:8px}
   <div class="sec-body">
     <div class="problem">
       <div class="ptabs" role="tablist" aria-label="Puzzles and games">
-        <button role="tab" aria-selected="true" aria-controls="pz1" id="t1">Puzzle 1</button>
-        <button role="tab" aria-selected="false" aria-controls="pz2" id="t2">Puzzle 2</button>
-        <button role="tab" aria-selected="false" aria-controls="pz3" id="t3">Puzzle 3</button>
-        <button role="tab" aria-selected="false" aria-controls="pz4" id="t4"><i class="fa-solid fa-virus" aria-hidden="true"></i> Outbreak game</button>
-        <button role="tab" aria-selected="false" aria-controls="pz5" id="t5"><i class="fa-solid fa-dice-d20" aria-hidden="true"></i> Build a capsid</button>
+        <span class="pgroup">Puzzles</span>
+        <button role="tab" aria-selected="true" aria-controls="pz1" id="t1">12 pentagons</button>
+        <button role="tab" aria-selected="false" aria-controls="pz2" id="t2">Vanishing outbreak</button>
+        <button role="tab" aria-selected="false" aria-controls="pz3" id="t3">Counting proteins</button>
+        <span class="pgroup">Games</span>
+        <button role="tab" aria-selected="false" aria-controls="pz5" id="t5"><i class="fa-solid fa-virus-covid" aria-hidden="true"></i> Virus shells</button>
+        <button role="tab" aria-selected="false" aria-controls="pz4" id="t4"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> Outbreak simulator</button>
+        <button role="tab" aria-selected="false" aria-controls="pz7" id="t7"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i> Guess the R₀</button>
+        <button role="tab" aria-selected="false" aria-controls="pz6" id="t6"><i class="fa-solid fa-shapes" aria-hidden="true"></i> Hat supertiles</button>
+        <button role="tab" aria-selected="false" aria-controls="pz8" id="t8"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Darts for π</button>
+        <span class="pgroup">Forecasting</span>
+        <button role="tab" aria-selected="false" aria-controls="pz9" id="t9"><i class="fa-solid fa-bolt" aria-hidden="true"></i> Beat the forecaster</button>
+        <button role="tab" aria-selected="false" aria-controls="pz10" id="t10"><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> How far back?</button>
+        <button role="tab" aria-selected="false" aria-controls="pz11" id="t11"><i class="fa-solid fa-brain" aria-hidden="true"></i> Watch a network learn</button>
       </div>
 
       <div class="ppanel" role="tabpanel" id="pz1" aria-labelledby="t1">
@@ -768,12 +803,12 @@ dialog.lb .count{opacity:.7;margin-left:8px}
         <div class="solution" hidden>
           <p>Count proteins two ways. If there are \(H\) hexamers,</p>
           $$60T = 5\cdot 12 + 6H \;\Longrightarrow\; H = 10(T-1).$$
-          <p>For \(T = 3\): \(180\) proteins, \(12\) pentamers and \(20\) hexamers. Allowed values are \(T = h^2 + hk + k^2\) for whole numbers \(h, k\), so \(T = 1, 3, 4, 7, 9, 12, 13, \dots\) Build your own in the capsid game.</p>
+          <p>For \(T = 3\): \(180\) proteins, \(12\) pentamers and \(20\) hexamers. Allowed values are \(T = h^2 + hk + k^2\) for whole numbers \(h, k\), so \(T = 1, 3, 4, 7, 9, 12, 13, \dots\) See them in 3D in the virus shells game.</p>
         </div>
       </div>
 
       <div class="ppanel" role="tabpanel" id="pz4" aria-labelledby="t4" hidden>
-        <p class="ptitle">Outbreak game</p>
+        <p class="ptitle">Outbreak simulator</p>
         <p class="meta">Each case infects a random number of new people with mean \(R_0\) (Poisson). Run 100 outbreaks and see how many die out by chance, compared with branching-process theory.</p>
         <div class="gctl">
           <label for="r0">\(R_0\) = <output id="r0v">1.5</output></label>
@@ -788,20 +823,111 @@ dialog.lb .count{opacity:.7;margin-left:8px}
       </div>
 
       <div class="ppanel" role="tabpanel" id="pz5" aria-labelledby="t5" hidden>
-        <p class="ptitle">Build a capsid</p>
-        <p class="meta">Pick \(h\) and \(k\). The arrow walks \(h\) steps one way and \(k\) steps after a 60° turn on the hexagonal lattice; the triangle it spans is one of the 20 faces of the capsid.</p>
-        <div class="gctl">
-          <label for="hh">\(h\) = <output id="hv">1</output></label>
-          <input type="range" id="hh" min="0" max="4" step="1" value="1">
-          <label for="kk">\(k\) = <output id="kv">1</output></label>
-          <input type="range" id="kk" min="0" max="4" step="1" value="1">
+        <p class="ptitle">Virus shells in 3D</p>
+        <p class="meta">Many viruses protect their genome with a shell built from copies of one protein, grouped into pentamers and hexamers. Pick a size and drag the shell to spin it. Every shell has exactly 12 pentamers (gold); bigger viruses just add more hexamers.</p>
+        <div class="tpick" role="group" aria-label="Shell size">
+          <button type="button" data-h="1" data-k="0" aria-pressed="true">T = 1</button>
+          <button type="button" data-h="1" data-k="1" aria-pressed="false">T = 3</button>
+          <button type="button" data-h="2" data-k="0" aria-pressed="false">T = 4</button>
+          <button type="button" data-h="2" data-k="1" aria-pressed="false">T = 7</button>
+          <button type="button" data-h="3" data-k="1" aria-pressed="false">T = 13</button>
+          <button type="button" data-h="4" data-k="0" aria-pressed="false">T = 16</button>
         </div>
-        <canvas id="tcv" aria-label="Triangular capsid face on a hexagonal lattice"></canvas>
+        <canvas id="shellcv" aria-label="Rotating virus capsid model; drag to rotate"></canvas>
+        <p class="shellex" id="shellex"></p>
         <div class="gstats" aria-live="polite">
-          <div><span id="tT">3</span><small>\(T = h^2+hk+k^2\)</small></div>
-          <div><span id="tP">180</span><small>proteins (60T)</small></div>
+          <div><span id="sT">1</span><small>triangulation number T</small></div>
           <div><span>12</span><small>pentamers</small></div>
-          <div><span id="tH">20</span><small>hexamers</small></div>
+          <div><span id="sH">0</span><small>hexamers</small></div>
+          <div><span id="sP">60</span><small>proteins (60T)</small></div>
+        </div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz7" aria-labelledby="t7" hidden>
+        <p class="ptitle">Guess the \(R_0\)</p>
+        <p class="meta">A random outbreak spreads through a town of 1,000 people (a stochastic SIR model). Look at the curve of infected people and guess how contagious the disease was.</p>
+        <canvas id="r0cv" aria-label="Epidemic curve of infected people over time"></canvas>
+        <div class="r0opts" id="r0opts" role="group" aria-label="Your guess"></div>
+        <p class="r0msg" id="r0msg" aria-live="polite"></p>
+        <div class="gctl"><button type="button" id="r0next">New outbreak</button></div>
+        <div class="gstats"><div><span id="r0score">0 / 0</span><small>correct guesses</small></div><div><span id="r0streak">0</span><small>current streak</small></div></div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz8" aria-labelledby="t8" hidden>
+        <p class="ptitle">Darts for \(\pi\)</p>
+        <p class="meta">Throw random darts at a square with a circle inside. The fraction that lands in the circle is about \(\pi/4\), so four times that fraction estimates \(\pi\). This is the Monte Carlo idea behind stochastic simulation.</p>
+        <div class="gctl">
+          <button type="button" data-n="1">Throw 1</button>
+          <button type="button" data-n="100">Throw 100</button>
+          <button type="button" data-n="1000">Throw 1,000</button>
+          <button type="button" id="dreset" class="ghost">Clear</button>
+        </div>
+        <canvas id="dartcv" aria-label="Darts thrown at a square containing a circle"></canvas>
+        <div class="gstats" aria-live="polite">
+          <div><span id="dN">0</span><small>darts thrown</small></div>
+          <div><span id="dPi">–</span><small>estimate of π</small></div>
+          <div><span id="dErr">–</span><small>error</small></div>
+        </div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz6" aria-labelledby="t6" hidden>
+        <p class="ptitle">Grow the hat tiling</p>
+        <p class="meta">The hat is an "einstein": one tile that covers the plane, but never periodically. Hats group into four metatiles, H, T, P and F, and every click groups those into bigger supertiles of the same four kinds. Gold hats are the mirror-image ones.</p>
+        <div class="gctl">
+          <button type="button" id="hatgrow">Build next level</button>
+          <button type="button" id="hatreset" class="ghost">Start over</button>
+          <label class="chk"><input type="checkbox" id="hatlines" checked> Show supertile outlines</label>
+        </div>
+        <canvas id="hatcv" aria-label="Hat tiling grown by supertile substitution"></canvas>
+        <div class="gstats" aria-live="polite">
+          <div><span id="hatlev">1</span><small>supertile level</small></div>
+          <div><span id="hatn">4</span><small>hats</small></div>
+          <div><span id="hatr">1</span><small>mirror-image hats</small></div>
+        </div>
+        <p class="meta credit">Hat discovered by D. Smith, J. S. Myers, C. S. Kaplan and C. Goodman-Strauss (2023). Supertile construction adapted from Craig S. Kaplan's <a href="https://github.com/isohedral/hatviz">hatviz</a> (BSD-3-Clause).</p>
+      </div>
+      <div class="ppanel" role="tabpanel" id="pz9" aria-labelledby="t9" hidden>
+        <p class="ptitle">Beat the forecaster</p>
+        <p class="meta">Here are three days of a home's hourly electricity use. <strong>Draw your forecast for the next 24 hours</strong> in the shaded area (drag across it), then reveal the real values. A simple model forecasts too: it averages the same hour over the last three days.</p>
+        <canvas id="fc1cv" aria-label="Electricity use for three days with a drawing area for the next day"></canvas>
+        <div class="gctl">
+          <button type="button" id="fc1go">Reveal</button>
+          <button type="button" id="fc1new" class="ghost">New day</button>
+        </div>
+        <p class="r0msg" id="fc1msg" aria-live="polite">Drag in the shaded area to draw your forecast.</p>
+        <div class="gstats">
+          <div><span id="fc1you">–</span><small>your average error (kW)</small></div>
+          <div><span id="fc1mod">–</span><small>model's average error (kW)</small></div>
+          <div><span id="fc1score">0 – 0</span><small>you vs model</small></div>
+        </div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz10" aria-labelledby="t10" hidden>
+        <p class="ptitle">How far back should the model look?</p>
+        <p class="meta">A forecasting model predicts the next hour from the last \(L\) hours (a linear autoregressive model, fitted to three weeks of data). Slide \(L\) and watch the two-day test forecast. Recurrent neural networks are built to keep this kind of memory of the past.</p>
+        <div class="gctl">
+          <label for="lagL">\(L\) = <output id="lagv">1</output> hour(s)</label>
+          <input type="range" id="lagL" min="1" max="48" step="1" value="1">
+        </div>
+        <canvas id="fc2cv" aria-label="Actual and forecast electricity use over two test days"></canvas>
+        <p class="r0msg" id="fc2msg" aria-live="polite"></p>
+        <div class="gstats">
+          <div><span id="fc2err">–</span><small>average error (kW)</small></div>
+          <div><span id="fc2best">–</span><small>best so far</small></div>
+        </div>
+      </div>
+
+      <div class="ppanel" role="tabpanel" id="pz11" aria-labelledby="t11" hidden>
+        <p class="ptitle">Watch a network learn</p>
+        <p class="meta">A small neural network (24 inputs, 10 hidden neurons) learns to predict the next hour from the previous 24. Press <em>Train</em> and watch its forecast (gold) move toward the real data as the error falls. My paper used recurrent networks, a version built for sequences, but the learning idea is the same.</p>
+        <div class="gctl">
+          <button type="button" id="nnrun">Train</button>
+          <button type="button" id="nnreset" class="ghost">Reset</button>
+        </div>
+        <canvas id="nncv" aria-label="Neural network forecast compared with actual electricity use"></canvas>
+        <div class="gstats" aria-live="polite">
+          <div><span id="nnep">0</span><small>training rounds</small></div>
+          <div><span id="nnerr">–</span><small>average error (kW)</small></div>
         </div>
       </div>
     </div>
@@ -963,12 +1089,14 @@ document.getElementById('mode').addEventListener('click',()=>{
   try{localStorage.setItem('theme',root.dataset.theme)}catch(e){}
 });
 
+/* hero "Bored?" button: jump to games and open the first game */
+document.getElementById('playbtn').addEventListener('click',()=>{ const t=document.getElementById('t5'); if(t) setTimeout(()=>t.click(),0); });
 /* ---------- puzzles: tabs + solutions ---------- */
 (function(){
   const tabs=[...document.querySelectorAll('.ptabs [role=tab]')];
   function sel(t){ tabs.forEach(x=>{const on=x===t; x.setAttribute('aria-selected',on); x.tabIndex=on?0:-1;
     document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});
-    if(t.id==='t4'&&!window._obRan) runOutbreak(); if(t.id==='t5') drawCapsid(); }
+    if(t.id==='t4'&&!window._obRan) runOutbreak(); if(t.id==='t5') Shell.start(); if(t.id==='t7') GuessR0.start(); if(t.id==='t8') Darts.start(); if(t.id==='t9') Beat.start(); if(t.id==='t10') Lag.start(); if(t.id==='t11') Net.start(); if(t.id==='t6') HatLab.draw(); }
   tabs.forEach((t,i)=>{ t.addEventListener('click',()=>sel(t));
     t.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length]; n.focus(); sel(n);} }); });
   document.querySelectorAll('.solbtn').forEach(b=>b.addEventListener('click',()=>{
@@ -1006,40 +1134,359 @@ function runOutbreak(){
 document.getElementById('r0').addEventListener('input',e=>document.getElementById('r0v').textContent=(+e.target.value).toFixed(1));
 document.getElementById('runob').addEventListener('click',runOutbreak);
 
-/* ---------- capsid game: Caspar–Klug triangulation number ---------- */
-function drawCapsid(){
-  const h=+document.getElementById('hh').value, k=+document.getElementById('kk').value;
-  document.getElementById('hv').textContent=h; document.getElementById('kv').textContent=k;
-  const T=h*h+h*k+k*k;
-  document.getElementById('tT').textContent=T||'–';
-  document.getElementById('tP').textContent=T?60*T:'–';
-  document.getElementById('tH').textContent=T?10*(T-1):'–';
-  const cv=document.getElementById('tcv'); const [c,W,H]=fitCanvas(cv); c.clearRect(0,0,W,H);
-  const s3=Math.sqrt(3);
-  const U=(i,j)=>[i+j/2, j*s3/2];
-  const pts=T?[U(0,0),U(h,k),U(-k,h+k)]:[U(0,0),U(1,0),U(0,1)];
-  const xs=pts.map(p=>p[0]), ys=pts.map(p=>p[1]);
-  const bw=Math.max(...xs)-Math.min(...xs), bh=Math.max(...ys)-Math.min(...ys);
-  const a=Math.min(70,(W-70)/bw,(H-70)/bh);
-  const cx=(Math.max(...xs)+Math.min(...xs))/2, cy=(Math.max(...ys)+Math.min(...ys))/2;
-  const P=(i,j)=>{const [u,v]=U(i,j); return [W/2+(u-cx)*a, H/2-(v-cy)*a];};
-  const lil=cssv('--lilac'), gold=cssv('--gold');
-  // lattice points
-  c.fillStyle='rgba(174,184,246,.35)';
-  for(let i=-30;i<=30;i++)for(let j=-30;j<=30;j++){ const [x,y]=P(i,j); if(x>-5&&x<W+5&&y>-5&&y<H+5){c.beginPath();c.arc(x,y,2.2,0,7);c.fill();} }
-  if(!T){ c.fillStyle=lil; c.font='14px Space Grotesk, sans-serif'; c.fillText('Pick h or k above 0',16,28); return; }
-  // face: 0, v=(h,k), w = v rotated 60° = (-k, h+k)
-  const A=P(0,0), B=P(h,k), C=P(-k,h+k);
-  c.fillStyle='rgba(201,150,30,.18)'; c.strokeStyle=gold; c.lineWidth=2;
-  c.beginPath(); c.moveTo(...A); c.lineTo(...B); c.lineTo(...C); c.closePath(); c.fill(); c.stroke();
-  // arrow path: h steps along a1, then k steps along a2
-  const M=P(h,0); c.strokeStyle=lil; c.lineWidth=2.5; c.setLineDash([6,5]);
-  c.beginPath(); c.moveTo(...A); c.lineTo(...M); c.lineTo(...B); c.stroke(); c.setLineDash([]);
-  [A,B,C].forEach(p=>{ c.fillStyle=gold; c.beginPath(); c.arc(p[0],p[1],7,0,7); c.fill(); });
-  c.fillStyle=lil; c.font='12px Space Grotesk, sans-serif'; c.fillText('pentamers at the corners',12,H-12);
+/* ---------- virus shells: 3D Caspar–Klug capsid ---------- */
+const Shell=(function(){
+  const EX={'1,0':'Example: satellite tobacco necrosis virus (T = 1)','1,1':'Example: norovirus (T = 3)','2,0':'Example: hepatitis B virus core (T = 4)',
+    '2,1':'Example: bacteriophage HK97 (T = 7)','3,1':'Example: bluetongue virus outer layer (T = 13)','4,0':'Example: herpes simplex virus (T = 16)'};
+  const phi=(1+Math.sqrt(5))/2, nrm=v=>{const l=Math.hypot(...v);return v.map(x=>x/l)};
+  const V=[[-1,phi,0],[1,phi,0],[-1,-phi,0],[1,-phi,0],[0,-1,phi],[0,1,phi],[0,-1,-phi],[0,1,-phi],[phi,0,-1],[phi,0,1],[-phi,0,-1],[-phi,0,1]].map(nrm);
+  const F=[]; const d=(a,b)=>Math.hypot(V[a][0]-V[b][0],V[a][1]-V[b][1],V[a][2]-V[b][2]), e=d(0,1)*1.01;
+  for(let i=0;i<12;i++)for(let j=i+1;j<12;j++)for(let k=j+1;k<12;k++) if(d(i,j)<e&&d(j,k)<e&&d(i,k)<e){
+    const A=V[i],B=V[j],C=V[k], ab=B.map((x,t)=>x-A[t]), ac=C.map((x,t)=>x-A[t]);
+    const n=[ab[1]*ac[2]-ab[2]*ac[1],ab[2]*ac[0]-ab[0]*ac[2],ab[0]*ac[1]-ab[1]*ac[0]];
+    F.push(n[0]*A[0]+n[1]*A[1]+n[2]*A[2]>0?[i,j,k]:[i,k,j]); }
+  let pts=[], ang=[0.5,0.3], drag=null, h=1, k=0, raf=0;
+  function build(){
+    const s3=Math.sqrt(3)/2, X=(i,j)=>[i+j/2, j*s3];
+    const P1=X(h,k), P2=X(-k,h+k), det=P1[0]*P2[1]-P1[1]*P2[0];
+    const map=new Map(); const R=Math.max(h,k)+h+k+2;
+    for(const [a,b,c] of F){ const A=V[a],B=V[b],C=V[c];
+      for(let i=-R;i<=R;i++)for(let j=-R;j<=R;j++){ const [x,y]=X(i,j);
+        const l1=(x*P2[1]-y*P2[0])/det, l2=(P1[0]*y-P1[1]*x)/det, l0=1-l1-l2;
+        if(l0<-1e-9||l1<-1e-9||l2<-1e-9) continue;
+        const p=nrm([0,1,2].map(t=>l0*A[t]+l1*B[t]+l2*C[t]));
+        const key=p.map(v=>Math.round(v*1e4)+0).join(',');
+        if(!map.has(key)){ const five=(Math.abs(l0-1)<1e-9||Math.abs(l1-1)<1e-9||Math.abs(l2-1)<1e-9); map.set(key,{p,five}); } } }
+    pts=[...map.values()];
+    const T=h*h+h*k+k*k;
+    document.getElementById('sT').textContent=T; document.getElementById('sH').textContent=10*(T-1); document.getElementById('sP').textContent=60*T;
+    document.getElementById('shellex').textContent=EX[h+','+k]||'';
+  }
+  function draw(){
+    const cv=document.getElementById('shellcv'); if(!cv||cv.closest('[hidden]')) return;
+    const [c,W,H]=fitCanvas(cv); c.clearRect(0,0,W,H);
+    const R=Math.min(W,H)*0.40, cx=W/2, cy=H/2, [ay,ax]=ang;
+    const cy1=Math.cos(ay),sy=Math.sin(ay),cx1=Math.cos(ax),sx=Math.sin(ax);
+    const n=pts.length, rad=Math.min(26,R*2.0/Math.sqrt(n)), gold=cssv('--gold');
+    const Q=pts.map(o=>{const [x,y,z]=o.p; let X=x*cy1+z*sy, Z=-x*sy+z*cy1, Y=y*cx1-Z*sx; Z=y*sx+Z*cx1; return {X:cx+X*R,Y:cy+Y*R,Z,five:o.five};}).sort((a,b)=>a.Z-b.Z);
+    for(const q of Q){ const lit=0.45+0.55*(q.Z+1)/2, r=rad*(0.82+0.18*(q.Z+1)/2);
+      c.globalAlpha=q.Z<0?0.35:1;
+      c.fillStyle=q.five?gold:`rgba(${Math.round(120+60*lit)},${Math.round(130+60*lit)},${Math.round(200+50*lit)},1)`;
+      c.beginPath(); const sides=q.five?5:6;
+      for(let i=0;i<sides;i++){const a=i*2*Math.PI/sides-Math.PI/2; const px=q.X+r*Math.cos(a), py=q.Y+r*Math.sin(a); i?c.lineTo(px,py):c.moveTo(px,py);}
+      c.closePath(); c.fill(); c.strokeStyle='rgba(11,16,48,.6)'; c.lineWidth=1; c.stroke(); }
+    c.globalAlpha=1;
+  }
+  function loop(){ if(!drag&&!matchMedia('(prefers-reduced-motion: reduce)').matches) ang[0]+=0.004; draw();
+    raf=document.getElementById('pz5').hidden?0:requestAnimationFrame(loop); }
+  function start(){ if(!pts.length) build(); if(!raf) loop(); }
+  const cv=document.getElementById('shellcv');
+  cv.addEventListener('pointerdown',e=>{drag=[e.clientX,e.clientY];cv.setPointerCapture(e.pointerId)});
+  cv.addEventListener('pointermove',e=>{if(!drag)return;ang[0]+=(e.clientX-drag[0])*0.01;ang[1]+=(e.clientY-drag[1])*0.01;drag=[e.clientX,e.clientY];draw()});
+  cv.addEventListener('pointerup',()=>drag=null);
+  document.querySelectorAll('.tpick button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('.tpick button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+    h=+b.dataset.h; k=+b.dataset.k; build(); draw(); }));
+  return {start,draw,count:()=>pts.length,set:(H,K)=>{h=H;k=K;build();}};
+})();
+
+/* ---------- guess the R0: stochastic SIR (Gillespie) ---------- */
+const GuessR0=(function(){
+  const CH=[1.3,1.8,2.5,4.0]; let cur=null, right=0, total=0, streak=0, answered=false;
+  function sim(R0){ // returns [t, I] samples; gamma=1
+    for(let tries=0;tries<50;tries++){
+      let S=990,I=10,Rr=0,t=0; const N=1000, beta=R0, g=1, out=[[0,I]];
+      while(I>0&&t<30){ const a1=beta*S*I/N, a2=g*I, a=a1+a2; t+=-Math.log(Math.random())/a;
+        if(Math.random()*a<a1){S--;I++;}else{I--;Rr++;} out.push([t,I]); }
+      if(Rr+I>40||R0<1.5) return out; }
+    return [[0,10]];
+  }
+  function draw(){
+    const cv=document.getElementById('r0cv'); if(!cv||cv.closest('[hidden]')||!cur) return;
+    const [c,W,H]=fitCanvas(cv); c.clearRect(0,0,W,H);
+    const pad=36, tmax=14, x=t=>pad+t/tmax*(W-pad-12), y=v=>H-pad-v/500*(H-pad-12);
+    c.strokeStyle='rgba(174,184,246,.3)'; c.fillStyle='rgba(185,193,234,.85)'; c.font='11px Space Grotesk, sans-serif';
+    c.beginPath(); c.moveTo(pad,8); c.lineTo(pad,H-pad); c.lineTo(W-8,H-pad); c.stroke();
+    [0,250,500].forEach(v=>c.fillText(v,6,y(v)+4)); c.fillText('time →',W-50,H-12); c.fillText('infected',pad+6,16);
+    c.strokeStyle=cssv('--gold'); c.lineWidth=2; c.beginPath();
+    cur.path.forEach(([t,I],i)=>{ if(t>tmax) return; i?c.lineTo(x(t),y(I)):c.moveTo(x(t),y(I)); }); c.stroke();
+  }
+  function next(){
+    const R0=CH[Math.floor(Math.random()*CH.length)]; cur={R0,path:sim(R0)}; answered=false;
+    const box=document.getElementById('r0opts'); box.innerHTML='';
+    CH.forEach(v=>{ const b=document.createElement('button'); b.type='button'; b.textContent='R₀ = '+v; b.addEventListener('click',()=>guess(v,b)); box.appendChild(b); });
+    document.getElementById('r0msg').textContent='Which one was it?'; draw();
+  }
+  function guess(v,b){
+    if(answered) return; answered=true; total++;
+    const ok=v===cur.R0; if(ok){right++;streak++;} else streak=0;
+    document.querySelectorAll('#r0opts button').forEach(x=>{ if(x.textContent==='R₀ = '+cur.R0) x.classList.add('right'); });
+    if(!ok) b.classList.add('wrong');
+    document.getElementById('r0msg').textContent=ok?'Correct! Higher R₀ means a faster, taller peak.':`Not quite. It was R₀ = ${cur.R0}. Higher R₀ gives an earlier, taller peak.`;
+    document.getElementById('r0score').textContent=right+' / '+total; document.getElementById('r0streak').textContent=streak;
+  }
+  document.getElementById('r0next').addEventListener('click',next);
+  return {start:()=>{ if(!cur) next(); else draw(); }, draw};
+})();
+
+/* ---------- darts for pi ---------- */
+const Darts=(function(){
+  let n=0, inside=0, dots=[];
+  function draw(){
+    const cv=document.getElementById('dartcv'); if(!cv||cv.closest('[hidden]')) return;
+    const [c,W,H]=fitCanvas(cv); c.clearRect(0,0,W,H);
+    const S=Math.min(W,H)-24, ox=(W-S)/2, oy=(H-S)/2;
+    c.strokeStyle='rgba(174,184,246,.6)'; c.lineWidth=1.5; c.strokeRect(ox,oy,S,S);
+    c.beginPath(); c.arc(ox+S/2,oy+S/2,S/2,0,7); c.stroke();
+    const gold=cssv('--gold');
+    for(const [x,y,ins] of dots){ c.fillStyle=ins?gold:'rgba(174,184,246,.75)'; c.fillRect(ox+x*S-1.2,oy+y*S-1.2,2.4,2.4); }
+    document.getElementById('dN').textContent=n.toLocaleString();
+    if(n){ const est=4*inside/n; document.getElementById('dPi').textContent=est.toFixed(4); document.getElementById('dErr').textContent=Math.abs(est-Math.PI).toFixed(4); }
+    else { document.getElementById('dPi').textContent='–'; document.getElementById('dErr').textContent='–'; }
+  }
+  function throwN(k){ for(let i=0;i<k;i++){ const x=Math.random(), y=Math.random(), ins=(x-.5)**2+(y-.5)**2<=.25; n++; if(ins) inside++; if(dots.length<6000) dots.push([x,y,ins]); } draw(); }
+  document.querySelectorAll('#pz8 [data-n]').forEach(b=>b.addEventListener('click',()=>throwN(+b.dataset.n)));
+  document.getElementById('dreset').addEventListener('click',()=>{n=0;inside=0;dots=[];draw();});
+  return {start:draw, draw};
+})();
+
+/* ---------- hat supertiles ----------
+   Adapted from hatviz by Craig S. Kaplan, https://github.com/isohedral/hatviz
+   Copyright (c) 2023, Craig S. Kaplan. All rights reserved.
+   Redistribution and use in source and binary forms, with or without modification, are permitted
+   provided that the following conditions are met: (1) Redistributions of source code must retain the
+   above copyright notice, this list of conditions and the following disclaimer. (2) Redistributions
+   in binary form must reproduce the above copyright notice, this list of conditions and the following
+   disclaimer in the documentation and/or other materials provided with the distribution. (3) Neither
+   the name of the copyright holder nor the names of its contributors may be used to endorse or
+   promote products derived from this software without specific prior written permission.
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+   IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+   FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+   DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+   IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+   OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
+const HatLab=(function(){
+  const hr3=0.8660254037844386, ident=[1,0,0,0,1,0], PI=Math.PI;
+  const pt=(x,y)=>({x,y}), hexPt=(x,y)=>pt(x+0.5*y,hr3*y);
+  const inv=T=>{const d=T[0]*T[4]-T[1]*T[3];return [T[4]/d,-T[1]/d,(T[1]*T[5]-T[2]*T[4])/d,-T[3]/d,T[0]/d,(T[2]*T[3]-T[0]*T[5])/d];};
+  const mul=(A,B)=>[A[0]*B[0]+A[1]*B[3],A[0]*B[1]+A[1]*B[4],A[0]*B[2]+A[1]*B[5]+A[2],A[3]*B[0]+A[4]*B[3],A[3]*B[1]+A[4]*B[4],A[3]*B[2]+A[4]*B[5]+A[5]];
+  const padd=(p,q)=>pt(p.x+q.x,p.y+q.y), psub=(p,q)=>pt(p.x-q.x,p.y-q.y);
+  const trot=a=>{const c=Math.cos(a),s=Math.sin(a);return [c,-s,0,s,c,0];};
+  const ttrans=(x,y)=>[1,0,x,0,1,y];
+  const rotAbout=(p,a)=>mul(ttrans(p.x,p.y),mul(trot(a),ttrans(-p.x,-p.y)));
+  const transPt=(M,P)=>pt(M[0]*P.x+M[1]*P.y+M[2],M[3]*P.x+M[4]*P.y+M[5]);
+  const matchSeg=(p,q)=>[q.x-p.x,p.y-q.y,p.x,q.y-p.y,q.x-p.x,p.y];
+  const matchTwo=(p1,q1,p2,q2)=>mul(matchSeg(p2,q2),inv(matchSeg(p1,q1)));
+  function intersect(p1,q1,p2,q2){const d=(q2.y-p2.y)*(q1.x-p1.x)-(q2.x-p2.x)*(q1.y-p1.y);
+    const uA=((q2.x-p2.x)*(p1.y-p2.y)-(q2.y-p2.y)*(p1.x-p2.x))/d; return pt(p1.x+uA*(q1.x-p1.x),p1.y+uA*(q1.y-p1.y));}
+  const hat=[hexPt(0,0),hexPt(-1,-1),hexPt(0,-2),hexPt(2,-2),hexPt(2,-1),hexPt(4,-2),hexPt(5,-1),hexPt(4,0),hexPt(3,0),hexPt(2,2),hexPt(0,3),hexPt(0,2),hexPt(-1,2)];
+  class Hat{constructor(l){this.label=l;}}
+  class Meta{constructor(shape,w){this.shape=shape;this.width=w;this.children=[];}
+    addChild(T,g){this.children.push({T,geom:g});}
+    evalChild(n,i){return transPt(this.children[n].T,this.children[n].geom.shape[i]);}
+    recentre(){let cx=0,cy=0;for(const p of this.shape){cx+=p.x;cy+=p.y;}cx/=this.shape.length;cy/=this.shape.length;
+      this.shape=this.shape.map(p=>padd(p,pt(-cx,-cy)));const M=ttrans(-cx,-cy);for(const c of this.children)c.T=mul(M,c.T);}}
+  const H1=new Hat('H1'),Hh=new Hat('H'),Th=new Hat('T'),Ph=new Hat('P'),Fh=new Hat('F');
+  function init(){
+    const Ho=[pt(0,0),pt(4,0),pt(4.5,hr3),pt(2.5,5*hr3),pt(1.5,5*hr3),pt(-0.5,hr3)], H=new Meta(Ho,2);
+    H.addChild(matchTwo(hat[5],hat[7],Ho[5],Ho[0]),Hh); H.addChild(matchTwo(hat[9],hat[11],Ho[1],Ho[2]),Hh);
+    H.addChild(matchTwo(hat[5],hat[7],Ho[3],Ho[4]),Hh);
+    H.addChild(mul(ttrans(2.5,hr3),mul([-0.5,-hr3,0,hr3,-0.5,0],[0.5,0,0,0,-0.5,0])),H1);
+    const T=new Meta([pt(0,0),pt(3,0),pt(1.5,3*hr3)],2); T.addChild([0.5,0,0.5,0,0.5,hr3],Th);
+    const P=new Meta([pt(0,0),pt(4,0),pt(3,2*hr3),pt(-1,2*hr3)],2);
+    P.addChild([0.5,0,1.5,0,0.5,hr3],Ph); P.addChild(mul(ttrans(0,2*hr3),mul([0.5,hr3,0,-hr3,0.5,0],[0.5,0,0,0,0.5,0])),Ph);
+    const F=new Meta([pt(0,0),pt(3,0),pt(3.5,hr3),pt(3,2*hr3),pt(-1,2*hr3)],2);
+    F.addChild([0.5,0,1.5,0,0.5,hr3],Fh); F.addChild(mul(ttrans(0,2*hr3),mul([0.5,hr3,0,-hr3,0.5,0],[0.5,0,0,0,0.5,0])),Fh);
+    return [H,T,P,F];
+  }
+  function constructPatch(H,T,P,F){
+    const rules=[['H'],[0,0,'P',2],[1,0,'H',2],[2,0,'P',2],[3,0,'H',2],[4,4,'P',2],[0,4,'F',3],[2,4,'F',3],[4,1,3,2,'F',0],[8,3,'H',0],[9,2,'P',0],[10,2,'H',0],[11,4,'P',2],[12,0,'H',2],[13,0,'F',3],[14,2,'F',1],[15,3,'H',4],[8,2,'F',1],[17,3,'H',0],[18,2,'P',0],[19,2,'H',2],[20,4,'F',3],[20,0,'P',2],[22,0,'H',2],[23,4,'F',3],[23,0,'F',3],[16,0,'P',2],[9,4,0,2,'T',2],[4,0,'F',3]];
+    const ret=new Meta([],H.width), sh={H,T,P,F};
+    for(const r of rules){
+      if(r.length===1) ret.addChild(ident,sh[r[0]]);
+      else if(r.length===4){const poly=ret.children[r[0]].geom.shape, T0=ret.children[r[0]].T;
+        const Pp=transPt(T0,poly[(r[1]+1)%poly.length]), Q=transPt(T0,poly[r[1]]), n=sh[r[2]], np=n.shape;
+        ret.addChild(matchTwo(np[r[3]],np[(r[3]+1)%np.length],Pp,Q),n);}
+      else{const cP=ret.children[r[0]], cQ=ret.children[r[2]];
+        const Pp=transPt(cQ.T,cQ.geom.shape[r[3]]), Q=transPt(cP.T,cP.geom.shape[r[1]]), n=sh[r[4]], np=n.shape;
+        ret.addChild(matchTwo(np[r[5]],np[(r[5]+1)%np.length],Pp,Q),n);}
+    }
+    return ret;
+  }
+  function constructMetatiles(patch){
+    const b1=patch.evalChild(8,2), b2=patch.evalChild(21,2), rb=transPt(rotAbout(b1,-2*PI/3),b2);
+    const p72=patch.evalChild(7,2), p252=patch.evalChild(25,2);
+    const llc=intersect(b1,rb,patch.evalChild(6,2),p72); let w=psub(patch.evalChild(6,2),llc);
+    const Ho=[llc,b1]; w=transPt(trot(-PI/3),w); Ho.push(padd(Ho[1],w)); Ho.push(patch.evalChild(14,2));
+    w=transPt(trot(-PI/3),w); Ho.push(psub(Ho[3],w)); Ho.push(patch.evalChild(6,2));
+    const nH=new Meta(Ho,patch.width*2); for(const c of [0,9,16,27,26,6,1,8,10,15]) nH.addChild(patch.children[c].T,patch.children[c].geom);
+    const nP=new Meta([p72,padd(p72,psub(b1,llc)),b1,llc],patch.width*2); for(const c of [7,2,3,4,28]) nP.addChild(patch.children[c].T,patch.children[c].geom);
+    const nF=new Meta([b2,patch.evalChild(24,2),patch.evalChild(25,0),p252,padd(p252,psub(llc,b1))],patch.width*2);
+    for(const c of [21,20,22,23,24,25]) nF.addChild(patch.children[c].T,patch.children[c].geom);
+    const A=Ho[2], B=padd(Ho[1],psub(Ho[4],Ho[5])), C=transPt(rotAbout(B,-PI/3),A);
+    const nT=new Meta([B,C,A],patch.width*2); nT.addChild(patch.children[11].T,patch.children[11].geom);
+    [nH,nP,nF,nT].forEach(m=>m.recentre()); return [nH,nT,nP,nF];
+  }
+  // flatten: hats (with labels) and outlines per level
+  function collect(g,S,lev,hats,lines){
+    if(g instanceof Hat){hats.push({S,label:g.label});return;}
+    lines.push({S,shape:g.shape,lev});
+    for(const c of g.children) collect(c.geom,mul(S,c.T),lev-1,hats,lines);
+  }
+  let tiles=init(), level=1;
+  const MAX=4;
+  function draw(){
+    const cv=document.getElementById('hatcv'); if(!cv) return;
+    const [c,W,H]=fitCanvas(cv); c.clearRect(0,0,W,H);
+    const hats=[],lines=[]; collect(tiles[0],ident,level,hats,lines);
+    let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+    for(const h of hats) for(const p of hat){const q=transPt(h.S,p); x0=Math.min(x0,q.x);x1=Math.max(x1,q.x);y0=Math.min(y0,q.y);y1=Math.max(y1,q.y);}
+    const sc=Math.min((W-24)/(x1-x0),(H-24)/(y1-y0)), ox=W/2-sc*(x0+x1)/2, oy=H/2+sc*(y0+y1)/2;
+    const V=[sc,0,ox,0,-sc,oy];
+    const gold=cssv('--gold'), cols={H:'rgba(174,184,246,.55)',T:'rgba(174,184,246,.30)',P:'rgba(174,184,246,.38)',F:'rgba(174,184,246,.22)',H1:gold};
+    c.lineJoin='round'; c.lineWidth=Math.max(.4,Math.min(1,sc*0.08)); c.strokeStyle='rgba(11,16,48,.9)';
+    for(const h of hats){const M=mul(V,h.S); c.beginPath(); hat.forEach((p,i)=>{const q=transPt(M,p); i?c.lineTo(q.x,q.y):c.moveTo(q.x,q.y);}); c.closePath();
+      c.fillStyle=cols[h.label]; c.fill(); c.stroke();}
+    if(document.getElementById('hatlines').checked){
+      c.strokeStyle='rgba(255,255,255,.85)';
+      const minLev=Math.max(1,level-1);
+      for(const L of lines){ if(L.lev<minLev) continue; const M=mul(V,L.S);
+        c.lineWidth=L.lev===level?2.6:1.3; c.strokeStyle=L.lev===level?'rgba(255,255,255,.95)':'rgba(255,255,255,.6)'; c.beginPath();
+        L.shape.forEach((p,i)=>{const q=transPt(M,p); i?c.lineTo(q.x,q.y):c.moveTo(q.x,q.y);}); c.closePath(); c.stroke(); }
+    }
+    document.getElementById('hatlev').textContent=level;
+    document.getElementById('hatn').textContent=hats.length.toLocaleString();
+    document.getElementById('hatr').textContent=hats.filter(h=>h.label==='H1').length.toLocaleString();
+    document.getElementById('hatgrow').disabled=level>=MAX;
+  }
+  document.getElementById('hatgrow').addEventListener('click',()=>{ if(level>=MAX) return; tiles=constructMetatiles(constructPatch(...tiles)); level++; draw(); });
+  document.getElementById('hatreset').addEventListener('click',()=>{ tiles=init(); level=1; draw(); });
+  document.getElementById('hatlines').addEventListener('change',draw);
+  return {draw};
+})();
+
+/* ---------- forecasting games: synthetic household load ---------- */
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function genLoad(seed,hours){
+  const r=mulberry(seed), g=()=>Math.sqrt(-2*Math.log(r()+1e-12))*Math.cos(2*Math.PI*r());
+  const out=[]; let dayMul=1, e=0;
+  for(let t=0;t<hours;t++){ const h=t%24, d=Math.floor(t/24), wk=(d%7)>=5;
+    if(h===0) dayMul=0.9+0.2*r();
+    const morn=wk?0.30*Math.exp(-(((h-10)/2.5)**2)):0.38*Math.exp(-(((h-7.5)/1.6)**2));
+    const eve=0.75*Math.exp(-(((h-19)/2.4)**2)), day=wk?0.20*Math.exp(-(((h-14)/3)**2)):0.06;
+    e=0.6*e+0.05*g();
+    out.push(Math.max(0.15,(0.45+morn+eve+day)*dayMul*1.6+e)); }
+  return out;
 }
-['hh','kk'].forEach(id=>document.getElementById(id).addEventListener('input',drawCapsid));
-addEventListener('resize',()=>{ if(!document.getElementById('pz4').hidden) runOutbreak(); if(!document.getElementById('pz5').hidden) drawCapsid(); });
+function plotFrame(c,W,H,n,ymax,opt={}){
+  const pad=36, x=i=>pad+i/(n-1)*(W-pad-10), y=v=>H-26-v/ymax*(H-26-10);
+  c.strokeStyle='rgba(174,184,246,.3)'; c.fillStyle='rgba(185,193,234,.85)'; c.font='11px Space Grotesk, sans-serif';
+  c.beginPath(); c.moveTo(pad,8); c.lineTo(pad,H-26); c.lineTo(W-8,H-26); c.stroke();
+  for(let v=0;v<=ymax+1e-9;v+=1) c.fillText(v+'',pad-14,y(v)+4);
+  c.fillText('kW',pad+6,16);
+  if(opt.days) for(let i=0;i<n;i+=24){ c.fillText(opt.days(i),x(i)+3,H-10); c.strokeStyle='rgba(174,184,246,.12)'; c.beginPath(); c.moveTo(x(i),10); c.lineTo(x(i),H-26); c.stroke(); }
+  return {x,y,pad};
+}
+function line(c,F,arr,off,col,w,dash){ c.strokeStyle=col; c.lineWidth=w; c.setLineDash(dash||[]); c.beginPath();
+  let started=false; arr.forEach((v,i)=>{ if(v==null) return; const X=F.x(i+off),Y=F.y(v); started?c.lineTo(X,Y):c.moveTo(X,Y); started=true; }); c.stroke(); c.setLineDash([]); }
+const mae=(a,b)=>a.reduce((s,v,i)=>s+Math.abs(v-b[i]),0)/a.length;
+
+/* game: beat the forecaster */
+const Beat=(function(){
+  let seed=11, hist, truth, user, model, revealed=false, wins=[0,0], drawing=false, last=null;
+  const N=96, YM=4;
+  function setup(){ const d=genLoad(seed,7*24); hist=d.slice(72,144); truth=d.slice(144,168);
+    const full=d.slice(0,144); model=[...Array(24)].map((_,h)=>(full[144-72+h]+full[144-48+h]+full[144-24+h])/3);
+    user=Array(24).fill(hist[hist.length-1]); revealed=false;
+    document.getElementById('fc1msg').textContent='Drag in the shaded area to draw your forecast.';
+    document.getElementById('fc1you').textContent='–'; document.getElementById('fc1mod').textContent='–';
+    document.getElementById('fc1go').disabled=false; draw(); }
+  let F=null;
+  function draw(){ const cv=document.getElementById('fc1cv'); if(!cv||cv.closest('[hidden]')) return;
+    const [c,W,H]=fitCanvas(cv); c.clearRect(0,0,W,H);
+    F=plotFrame(c,W,H,N,YM,{days:i=>['day 1','day 2','day 3','tomorrow'][i/24]});
+    c.fillStyle='rgba(201,150,30,.10)'; c.fillRect(F.x(72),10,F.x(95)-F.x(72),H-36);
+    line(c,F,hist,0,'rgba(174,184,246,.9)',2);
+    if(revealed){ line(c,F,model,72,'rgba(124,199,174,.95)',2,[5,4]); line(c,F,truth,72,'rgba(174,184,246,.9)',2); }
+    line(c,F,user,72,cssv('--gold'),2.6);
+    if(revealed){ c.font='11px Space Grotesk, sans-serif'; c.fillStyle=cssv('--gold'); c.fillText('you',W-60,22); c.fillStyle='rgba(124,199,174,1)'; c.fillText('model',W-60,36); c.fillStyle='rgba(174,184,246,1)'; c.fillText('actual',W-60,50); }
+  }
+  function setAt(e){ if(revealed||!F) return; const cv=document.getElementById('fc1cv'), r=cv.getBoundingClientRect();
+    const px=e.clientX-r.left, py=e.clientY-r.top;
+    const i=Math.round((px-F.pad)/((r.width-F.pad-10)/(N-1)))-72; if(i<0||i>23) return;
+    const v=Math.max(0,Math.min(YM,(r.height-26-py)/((r.height-36)/YM)));
+    if(last&&last[0]!==i){ const [i0,v0]=last, st=i>i0?1:-1; for(let k=i0;k!==i;k+=st) user[k]=v0+(v-v0)*(k-i0)/(i-i0); }
+    user[i]=v; last=[i,v]; draw(); }
+  const cv=document.getElementById('fc1cv');
+  cv.addEventListener('pointerdown',e=>{drawing=true;last=null;cv.setPointerCapture(e.pointerId);setAt(e);});
+  cv.addEventListener('pointermove',e=>{if(drawing)setAt(e);});
+  cv.addEventListener('pointerup',()=>{drawing=false;last=null;});
+  document.getElementById('fc1go').addEventListener('click',()=>{ if(revealed) return; revealed=true;
+    const eu=mae(user,truth), em=mae(model,truth); const win=eu<em; wins[win?0:1]++;
+    document.getElementById('fc1you').textContent=eu.toFixed(2); document.getElementById('fc1mod').textContent=em.toFixed(2);
+    document.getElementById('fc1score').textContent=wins[0]+' – '+wins[1];
+    document.getElementById('fc1msg').textContent=win?'You beat the model! You read the daily pattern well.':'The model wins this round. It uses the repeating daily pattern; try following the evening peak.';
+    document.getElementById('fc1go').disabled=true; draw(); });
+  document.getElementById('fc1new').addEventListener('click',()=>{seed++;setup();});
+  return {start:()=>{ if(!hist) setup(); else draw(); }, draw};
+})();
+
+/* game: how far back (AR(L) by least squares) */
+const Lag=(function(){
+  const data=genLoad(7,23*24), TR=21*24, best={v:Infinity,L:0};
+  function solve(A,b){ const n=b.length; for(let i=0;i<n;i++){ let p=i; for(let r=i+1;r<n;r++) if(Math.abs(A[r][i])>Math.abs(A[p][i])) p=r;
+      [A[i],A[p]]=[A[p],A[i]]; [b[i],b[p]]=[b[p],b[i]]; for(let r=i+1;r<n;r++){ const f=A[r][i]/A[i][i]; for(let k=i;k<n;k++) A[r][k]-=f*A[i][k]; b[r]-=f*b[i]; } }
+    const x=Array(n).fill(0); for(let i=n-1;i>=0;i--){ let s=b[i]; for(let k=i+1;k<n;k++) s-=A[i][k]*x[k]; x[i]=s/A[i][i]; } return x; }
+  function fit(L){ const n=L+1, A=[...Array(n)].map(()=>Array(n).fill(0)), b=Array(n).fill(0);
+    for(let t=48;t<TR;t++){ const f=[1]; for(let k=1;k<=L;k++) f.push(data[t-k]);
+      for(let i=0;i<n;i++){ b[i]+=f[i]*data[t]; for(let j=0;j<n;j++) A[i][j]+=f[i]*f[j]; } }
+    for(let i=1;i<n;i++) A[i][i]+=1e-3; return solve(A,b); }
+  let pred=[], L=1;
+  function run(){ L=+document.getElementById('lagL').value; document.getElementById('lagv').textContent=L;
+    const w=fit(L); pred=[]; for(let t=TR;t<data.length;t++){ let v=w[0]; for(let k=1;k<=L;k++) v+=w[k]*data[t-k]; pred.push(v); }
+    const e=mae(pred,data.slice(TR)); if(e<best.v){best.v=e;best.L=L;}
+    document.getElementById('fc2err').textContent=e.toFixed(3);
+    document.getElementById('fc2best').textContent=best.v.toFixed(3)+' (L = '+best.L+')';
+    document.getElementById('fc2msg').textContent=L<3?'With only the last hour or two, the forecast just copies the recent value and lags behind every rise and fall.':L<20?'More memory helps, but the model still can’t see yesterday’s pattern.':'Now the model remembers yesterday at the same hour, so it anticipates the morning and evening peaks.';
+    draw(); }
+  function draw(){ const cv=document.getElementById('fc2cv'); if(!cv||cv.closest('[hidden]')||!pred.length) return;
+    const [c,W,H]=fitCanvas(cv); c.clearRect(0,0,W,H); const F=plotFrame(c,W,H,48,4,{days:i=>['test day 1','test day 2'][i/24]});
+    line(c,F,data.slice(TR),0,'rgba(174,184,246,.9)',2); line(c,F,pred,0,cssv('--gold'),2.4);
+    c.font='11px Space Grotesk, sans-serif'; c.fillStyle=cssv('--gold'); c.fillText('forecast',W-70,22); c.fillStyle='rgba(174,184,246,1)'; c.fillText('actual',W-70,36); }
+  document.getElementById('lagL').addEventListener('input',run);
+  return {start:()=>{ if(!pred.length) run(); else draw(); }, draw};
+})();
+
+/* game: watch a network learn (24-10-1 MLP, SGD) */
+const Net=(function(){
+  const data=genLoad(23,23*24), TR=21*24, IN=24, HID=10;
+  const mu=data.reduce((a,b)=>a+b)/data.length, sd=Math.sqrt(data.reduce((a,b)=>a+(b-mu)**2,0)/data.length), z=data.map(v=>(v-mu)/sd);
+  let W1,b1,W2,b2,ep,running=false,raf=0,pred=[];
+  function reset(){ const r=mulberry(5), g=()=>(r()*2-1);
+    W1=[...Array(HID)].map(()=>[...Array(IN)].map(()=>g()*0.3)); b1=Array(HID).fill(0); W2=[...Array(HID)].map(()=>g()*0.3); b2=0; ep=0; evalTest(); }
+  function fwd(x){ const h=W1.map((w,j)=>Math.tanh(w.reduce((s,wi,i)=>s+wi*x[i],b1[j]))); return [h, h.reduce((s,hj,j)=>s+hj*W2[j],b2)]; }
+  function epoch(){ const lr=0.01, idx=[]; for(let t=IN;t<TR;t++) idx.push(t);
+    for(let i=idx.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+    for(const t of idx){ const x=z.slice(t-IN,t), [h,y]=fwd(x), e=y-z[t];
+      for(let j=0;j<HID;j++){ const gh=e*W2[j]*(1-h[j]*h[j]); W2[j]-=lr*e*h[j]; b1[j]-=lr*gh; const w=W1[j]; for(let i=0;i<IN;i++) w[i]-=lr*gh*x[i]; }
+      b2-=lr*e; } ep++; }
+  function evalTest(){ pred=[]; for(let t=TR;t<data.length;t++) pred.push(fwd(z.slice(t-IN,t))[1]*sd+mu);
+    document.getElementById('nnep').textContent=ep; document.getElementById('nnerr').textContent=mae(pred,data.slice(TR)).toFixed(3); draw(); }
+  function draw(){ const cv=document.getElementById('nncv'); if(!cv||cv.closest('[hidden]')||!pred.length) return;
+    const [c,W,H]=fitCanvas(cv); c.clearRect(0,0,W,H); const F=plotFrame(c,W,H,48,4,{days:i=>['test day 1','test day 2'][i/24]});
+    line(c,F,data.slice(TR),0,'rgba(174,184,246,.9)',2); line(c,F,pred,0,cssv('--gold'),2.4);
+    c.font='11px Space Grotesk, sans-serif'; c.fillStyle=cssv('--gold'); c.fillText('network',W-70,22); c.fillStyle='rgba(174,184,246,1)'; c.fillText('actual',W-70,36); }
+  function loop(){ if(!running) return; epoch(); evalTest();
+    if(ep>=150||document.getElementById('pz11').hidden){ stop(); return; } raf=setTimeout(loop,60); }
+  function stop(){ running=false; document.getElementById('nnrun').textContent=ep>=150?'Done':'Train'; document.getElementById('nnrun').disabled=ep>=150; }
+  document.getElementById('nnrun').addEventListener('click',()=>{ if(running){ stop(); return; } running=true; document.getElementById('nnrun').textContent='Pause'; loop(); });
+  document.getElementById('nnreset').addEventListener('click',()=>{ running=false; clearTimeout(raf); reset(); stop(); });
+  return {start:()=>{ if(!W1) reset(); else draw(); }, draw};
+})();
+addEventListener('resize',()=>{ Beat.draw(); Lag.draw(); Net.draw(); if(!document.getElementById('pz6').hidden) HatLab.draw(); if(!document.getElementById('pz4').hidden) runOutbreak(); Shell.draw(); GuessR0.draw(); Darts.draw(); });
 
 /* ---------- highlight current section in nav ---------- */
 const links=[...document.querySelectorAll('.topnav ol a')];
